@@ -44,24 +44,58 @@ function SubscribeWidget({
 
     setStatus('submitting');
 
-    // TODO: Integrate with your email service (Mailchimp, ConvertKit, Substack, etc.)
-    // For now, this is a placeholder that simulates a successful subscription
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    // Get Kit credentials from environment variables
+    const kitApiKey = import.meta.env.VITE_KIT_API_KEY;
+    const kitFormId = import.meta.env.VITE_KIT_FORM_ID;
 
-      setStatus('success');
-      setMessage('Thanks for subscribing! Check your inbox for a confirmation email.');
-      setEmail('');
-
-      // Reset after 5 seconds
-      setTimeout(() => {
-        setStatus('idle');
-        setMessage('');
-      }, 5000);
-    } catch (error) {
+    // Check if Kit is configured
+    if (!kitApiKey || !kitFormId) {
+      console.error('Kit API credentials not configured. Please set VITE_KIT_API_KEY and VITE_KIT_FORM_ID in your .env file.');
       setStatus('error');
-      setMessage('Something went wrong. Please try again later.');
+      setMessage('Newsletter signup is not configured yet. Please try again later.');
+      return;
+    }
+
+    try {
+      // Subscribe to Kit form
+      const response = await fetch(`https://api.kit.com/v3/forms/${kitFormId}/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          api_key: kitApiKey,
+          email: email,
+          // Optional: add custom fields or tags
+          // tags: ['blog-subscriber'],
+          // fields: { first_name: 'John' }
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus('success');
+        setMessage('Thanks for subscribing! Check your inbox for a confirmation email.');
+        setEmail('');
+
+        // Reset after 5 seconds
+        setTimeout(() => {
+          setStatus('idle');
+          setMessage('');
+        }, 5000);
+      } else {
+        // Handle Kit API errors
+        throw new Error(data.message || 'Subscription failed');
+      }
+    } catch (error) {
+      console.error('Kit subscription error:', error);
+      setStatus('error');
+      setMessage(
+        error.message === 'Subscription failed'
+          ? 'Unable to subscribe. Please check your email address.'
+          : 'Something went wrong. Please try again later.'
+      );
     }
   };
 
