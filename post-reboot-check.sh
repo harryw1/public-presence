@@ -121,8 +121,9 @@ if pgrep -f cloudflared > /dev/null; then
     sleep 10
 
     # Check tunnel connections
-    TUNNEL_CONNECTIONS=$(sudo journalctl -u cloudflared --since "5 minutes ago" | grep -c "Registered tunnel connection" || echo "0")
-    if [ "$TUNNEL_CONNECTIONS" -gt 0 ]; then
+    TUNNEL_CONNECTIONS=$(sudo journalctl -u cloudflared --since "5 minutes ago" | grep -c "Registered tunnel connection" 2>/dev/null || echo "0")
+    TUNNEL_CONNECTIONS=$(echo "$TUNNEL_CONNECTIONS" | tr -d '[:space:]')  # Remove any whitespace
+    if [ -n "$TUNNEL_CONNECTIONS" ] && [ "$TUNNEL_CONNECTIONS" -gt 0 ] 2>/dev/null; then
         success "Cloudflare Tunnel has $TUNNEL_CONNECTIONS registered connections"
     else
         warning "Cloudflare Tunnel may still be connecting..."
