@@ -59,8 +59,8 @@ function PostCard({ post }) {
       {post.tags.length > 0 && (
         <div className="post-tags">
           {post.tags.map(tag => (
-            <Link 
-              key={tag} 
+            <Link
+              key={tag}
               to={`/blog?tag=${encodeURIComponent(tag)}`}
               className="tag"
             >
@@ -69,11 +69,6 @@ function PostCard({ post }) {
           ))}
         </div>
       )}
-      
-      {/* Read more link */}
-      <Link to={`/blog/${post.slug}`} className="read-more">
-        Read full post →
-      </Link>
     </article>
   );
 }

@@ -182,16 +182,15 @@ function Post() {
         
         {/* Social sharing buttons */}
         <div className="social-share">
-          <strong>Share this post:</strong>
           <a
             href={shareLinks.twitter}
             target="_blank"
             rel="noopener noreferrer"
             className="share-button"
             aria-label="Share on Twitter"
+            title="Share on Twitter"
           >
-            <Twitter size={18} aria-hidden="true" />
-            <span>Twitter</span>
+            <Twitter size={20} aria-hidden="true" />
           </a>
           <a
             href={shareLinks.linkedin}
@@ -199,9 +198,9 @@ function Post() {
             rel="noopener noreferrer"
             className="share-button"
             aria-label="Share on LinkedIn"
+            title="Share on LinkedIn"
           >
-            <Linkedin size={18} aria-hidden="true" />
-            <span>LinkedIn</span>
+            <Linkedin size={20} aria-hidden="true" />
           </a>
           <a
             href={shareLinks.facebook}
@@ -209,17 +208,17 @@ function Post() {
             rel="noopener noreferrer"
             className="share-button"
             aria-label="Share on Facebook"
+            title="Share on Facebook"
           >
-            <Facebook size={18} aria-hidden="true" />
-            <span>Facebook</span>
+            <Facebook size={20} aria-hidden="true" />
           </a>
           <a
             href={shareLinks.email}
             className="share-button"
             aria-label="Share via Email"
+            title="Share via Email"
           >
-            <Mail size={18} aria-hidden="true" />
-            <span>Email</span>
+            <Mail size={20} aria-hidden="true" />
           </a>
         </div>
         
