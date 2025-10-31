@@ -157,7 +157,23 @@ function main() {
   // Write RSS file
   const rssPath = path.join(PUBLIC_DIR, 'rss.xml');
   fs.writeFileSync(rssPath, rss);
-  console.log(`✅ RSS feed generated: ${rssPath}\n`);
+  console.log(`✅ RSS feed generated: ${rssPath}`);
+  
+  // Generate posts JSON for browser consumption
+  console.log('📝 Generating posts JSON...');
+  const postsJsonPath = path.join(PUBLIC_DIR, 'posts.json');
+  const postsData = posts.map(post => ({
+    slug: post.slug,
+    title: post.title,
+    date: post.date,
+    excerpt: post.excerpt,
+    tags: post.tags,
+    author: post.author,
+    content: post.content,
+    readingTime: Math.ceil(post.content.trim().split(/\s+/).length / 200)
+  }));
+  fs.writeFileSync(postsJsonPath, JSON.stringify(postsData, null, 2));
+  console.log(`✅ Posts JSON generated: ${postsJsonPath}\n`);
   
   // Summary
   console.log('📊 Build summary:');

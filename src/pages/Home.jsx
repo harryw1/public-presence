@@ -7,15 +7,31 @@
  * - Link to view all posts
  */
 
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PostCard from '../components/PostCard';
 import { getRecentPosts } from '../utils/posts';
 
 function Home() {
-  // Get the 5 most recent posts for display
-  // This function is called during render, but since we're using
-  // static site generation, it happens at build time, not runtime
-  const recentPosts = getRecentPosts(5);
+  // State for posts and loading status
+  const [recentPosts, setRecentPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Load posts when component mounts
+  useEffect(() => {
+    async function loadPosts() {
+      try {
+        const posts = await getRecentPosts(5);
+        setRecentPosts(posts);
+      } catch (error) {
+        console.error('Failed to load posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    loadPosts();
+  }, []);
   
   return (
     <div className="main-content">
@@ -34,8 +50,9 @@ function Home() {
         <section className="recent-posts-section">
           <h2 className="section-title">Recent Posts</h2>
           
-          {/* Check if there are any posts to display */}
-          {recentPosts.length > 0 ? (
+          {loading ? (
+            <p className="loading">Loading posts...</p>
+          ) : recentPosts.length > 0 ? (
             <>
               {/* Render each post as a PostCard */}
               <div className="post-list">

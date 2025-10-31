@@ -11,7 +11,7 @@
  */
 
 import { useParams, Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'; // GitHub Flavored Markdown (tables, strikethrough, etc.)
 import remarkMath from 'remark-math'; // Math equation parsing
@@ -30,11 +30,31 @@ function Post() {
   // Example: /blog/my-first-post -> slug = "my-first-post"
   const { slug } = useParams();
   
-  // Load the post data
-  const post = getPostBySlug(slug);
+  // State for post data and navigation
+  const [post, setPost] = useState(null);
+  const [navigation, setNavigation] = useState({ previous: null, next: null });
+  const [loading, setLoading] = useState(true);
   
-  // Get previous and next posts for navigation
-  const navigation = post ? getPostNavigation(slug) : { previous: null, next: null };
+  // Load post data when slug changes
+  useEffect(() => {
+    async function loadPost() {
+      setLoading(true);
+      try {
+        const [loadedPost, nav] = await Promise.all([
+          getPostBySlug(slug),
+          getPostNavigation(slug)
+        ]);
+        setPost(loadedPost);
+        setNavigation(nav);
+      } catch (error) {
+        console.error('Failed to load post:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    loadPost();
+  }, [slug]);
   
   /**
    * Update document title when post loads
@@ -58,6 +78,17 @@ function Post() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+  
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="main-content">
+        <div className="container">
+          <p className="loading">Loading post...</p>
+        </div>
+      </div>
+    );
+  }
   
   // Handle case where post is not found
   if (!post) {

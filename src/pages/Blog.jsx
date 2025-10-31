@@ -19,37 +19,63 @@ function Blog() {
   const [searchParams, setSearchParams] = useSearchParams();
   
   // State management
-  const [posts, setPosts] = useState(getAllPosts());
-  const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState(searchParams.get('tag') || '');
+  const [allTags, setAllTags] = useState([]);
+  const [loading, setLoading] = useState(true);
   
-  // Get all unique tags for the filter interface
-  const allTags = getAllTags();
+  // Load posts and tags when component mounts
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [loadedPosts, loadedTags] = await Promise.all([
+          getAllPosts(),
+          getAllTags()
+        ]);
+        setPosts(loadedPosts);
+        setFilteredPosts(loadedPosts);
+        setAllTags(loadedTags);
+      } catch (error) {
+        console.error('Failed to load blog data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    loadData();
+  }, []);
   
   /**
    * Effect hook: Filter posts when search query or selected tag changes
    * This runs whenever searchQuery or selectedTag state updates
    */
   useEffect(() => {
-    let result = posts;
-    
-    // Apply tag filter if a tag is selected
-    if (selectedTag) {
-      result = getPostsByTag(selectedTag);
-    }
-    
-    // Apply search filter if there's a search query
-    if (searchQuery.trim()) {
-      result = searchPosts(searchQuery);
+    async function filterPosts() {
+      if (posts.length === 0) return;
       
-      // If both tag and search are active, combine filters
+      let result = posts;
+      
+      // Apply tag filter if a tag is selected
       if (selectedTag) {
-        result = result.filter(post => post.tags.includes(selectedTag));
+        result = await getPostsByTag(selectedTag);
       }
+      
+      // Apply search filter if there's a search query
+      if (searchQuery.trim()) {
+        result = await searchPosts(searchQuery);
+        
+        // If both tag and search are active, combine filters
+        if (selectedTag) {
+          result = result.filter(post => post.tags.includes(selectedTag));
+        }
+      }
+      
+      setFilteredPosts(result);
     }
     
-    setFilteredPosts(result);
+    filterPosts();
   }, [searchQuery, selectedTag, posts]);
   
   /**
@@ -90,15 +116,21 @@ function Blog() {
         {/* Page header */}
         <div className="blog-header">
           <h1>Blog Archive</h1>
-          <p className="text-muted">
-            {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'}
-            {selectedTag && ` tagged with "${selectedTag}"`}
-            {searchQuery && ` matching "${searchQuery}"`}
-          </p>
+          {!loading && (
+            <p className="text-muted">
+              {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'}
+              {selectedTag && ` tagged with "${selectedTag}"`}
+              {searchQuery && ` matching "${searchQuery}"`}
+            </p>
+          )}
         </div>
         
-        {/* Search and filter bar */}
-        <div className="search-filter-bar">
+        {loading ? (
+          <p className="loading">Loading posts...</p>
+        ) : (
+          <>
+            {/* Search and filter bar */}
+            <div className="search-filter-bar">
           {/* Search input */}
           <input
             type="text"
@@ -160,6 +192,8 @@ function Blog() {
             </div>
           )}
         </div>
+          </>
+        )}
       </div>
     </div>
   );
