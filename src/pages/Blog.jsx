@@ -23,7 +23,9 @@ function Blog() {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTag, setSelectedTag] = useState(searchParams.get('tag') || '');
+  const [selectedTags, setSelectedTags] = useState(
+    searchParams.get('tags') ? searchParams.get('tags').split(',') : []
+  );
   const [allTags, setAllTags] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -49,49 +51,65 @@ function Blog() {
   }, []);
   
   /**
-   * Effect hook: Filter posts when search query or selected tag changes
-   * This runs whenever searchQuery or selectedTag state updates
+   * Effect hook: Filter posts when search query or selected tags change
+   * This runs whenever searchQuery or selectedTags state updates
    */
   useEffect(() => {
     async function filterPosts() {
       if (posts.length === 0) return;
-      
+
       let result = posts;
-      
-      // Apply tag filter if a tag is selected
-      if (selectedTag) {
-        result = await getPostsByTag(selectedTag);
+
+      // Apply tag filters if any tags are selected
+      if (selectedTags.length > 0) {
+        // Filter posts that have at least one of the selected tags
+        result = posts.filter(post =>
+          selectedTags.some(tag => post.tags.includes(tag))
+        );
       }
-      
+
       // Apply search filter if there's a search query
       if (searchQuery.trim()) {
-        result = await searchPosts(searchQuery);
-        
-        // If both tag and search are active, combine filters
-        if (selectedTag) {
-          result = result.filter(post => post.tags.includes(selectedTag));
+        const searchResults = await searchPosts(searchQuery);
+
+        // If both tags and search are active, combine filters
+        if (selectedTags.length > 0) {
+          result = searchResults.filter(post =>
+            selectedTags.some(tag => post.tags.includes(tag))
+          );
+        } else {
+          result = searchResults;
         }
       }
-      
+
       setFilteredPosts(result);
     }
-    
+
     filterPosts();
-  }, [searchQuery, selectedTag, posts]);
+  }, [searchQuery, selectedTags, posts]);
   
   /**
-   * Handle tag selection
+   * Handle tag selection - now supports multiple tags
    * Updates both component state and URL parameters
    */
   const handleTagClick = (tag) => {
-    if (selectedTag === tag) {
-      // If clicking the same tag, deselect it
-      setSelectedTag('');
-      setSearchParams({}); // Clear URL params
+    let newSelectedTags;
+
+    if (selectedTags.includes(tag)) {
+      // If tag is already selected, remove it
+      newSelectedTags = selectedTags.filter(t => t !== tag);
     } else {
-      // Select new tag
-      setSelectedTag(tag);
-      setSearchParams({ tag }); // Update URL
+      // Add new tag to selection
+      newSelectedTags = [...selectedTags, tag];
+    }
+
+    setSelectedTags(newSelectedTags);
+
+    // Update URL params
+    if (newSelectedTags.length > 0) {
+      setSearchParams({ tags: newSelectedTags.join(',') });
+    } else {
+      setSearchParams({});
     }
   };
   
@@ -107,7 +125,7 @@ function Blog() {
    */
   const clearFilters = () => {
     setSearchQuery('');
-    setSelectedTag('');
+    setSelectedTags([]);
     setSearchParams({});
   };
   
@@ -120,7 +138,7 @@ function Blog() {
           {!loading && (
             <p className="text-muted">
               {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'}
-              {selectedTag && ` tagged with "${selectedTag}"`}
+              {selectedTags.length > 0 && ` tagged with ${selectedTags.map(t => `"${t}"`).join(', ')}`}
               {searchQuery && ` matching "${searchQuery}"`}
             </p>
           )}
@@ -143,7 +161,7 @@ function Blog() {
           />
           
           {/* Clear filters button (only show if filters are active) */}
-          {(searchQuery || selectedTag) && (
+          {(searchQuery || selectedTags.length > 0) && (
             <button
               onClick={clearFilters}
               className="tag tag-filter"
@@ -163,8 +181,8 @@ function Blog() {
               <button
                 key={tag}
                 onClick={() => handleTagClick(tag)}
-                className={`tag tag-filter ${selectedTag === tag ? 'active' : ''}`}
-                aria-pressed={selectedTag === tag}
+                className={`tag tag-filter ${selectedTags.includes(tag) ? 'active' : ''}`}
+                aria-pressed={selectedTags.includes(tag)}
               >
                 {tag}
               </button>
@@ -182,8 +200,8 @@ function Blog() {
             /* No results message */
             <div className="text-center text-muted" style={{ padding: '3rem 0' }}>
               <p>No posts found matching your criteria.</p>
-              {(searchQuery || selectedTag) && (
-                <button 
+              {(searchQuery || selectedTags.length > 0) && (
+                <button
                   onClick={clearFilters}
                   className="read-more"
                   style={{ marginTop: '1rem' }}

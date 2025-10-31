@@ -419,6 +419,7 @@ a:hover {
   gap: var(--space-sm);
   flex-wrap: wrap;
   align-items: center;
+  margin-bottom: var(--space-3xl);
 }
 
 .filter-label {

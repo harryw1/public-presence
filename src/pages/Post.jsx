@@ -17,6 +17,7 @@ import remarkGfm from 'remark-gfm'; // GitHub Flavored Markdown (tables, striket
 import remarkMath from 'remark-math'; // Math equation parsing
 import rehypeKatex from 'rehype-katex'; // LaTeX rendering
 import rehypeHighlight from 'rehype-highlight'; // Code syntax highlighting
+import rehypeSlug from 'rehype-slug'; // Auto-generate IDs for headings
 import { Calendar, BookOpen, Twitter, Linkedin, Facebook, Mail } from 'lucide-react';
 import { getPostBySlug, getPostNavigation, getAllPosts } from '../utils/posts';
 import { formatDate } from '../utils/dateUtils';
@@ -162,9 +163,9 @@ function Post() {
           {post.tags.length > 0 && (
             <div className="post-tags">
               {post.tags.map(tag => (
-                <Link 
-                  key={tag} 
-                  to={`/blog?tag=${encodeURIComponent(tag)}`}
+                <Link
+                  key={tag}
+                  to={`/blog?tags=${encodeURIComponent(tag)}`}
                   className="tag"
                 >
                   {tag}
@@ -182,12 +183,13 @@ function Post() {
             Plugins add extra features:
             - remarkGfm: GitHub Flavored Markdown (tables, task lists, etc.)
             - remarkMath: Parse math equations (e.g., $x^2$)
+            - rehypeSlug: Auto-generate IDs for headings (enables TOC navigation)
             - rehypeKatex: Render math with LaTeX
             - rehypeHighlight: Syntax highlighting for code blocks */}
         <div className="post-content">
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkMath]}
-            rehypePlugins={[rehypeKatex, rehypeHighlight]}
+            rehypePlugins={[rehypeSlug, rehypeKatex, rehypeHighlight]}
           >
             {post.content}
           </ReactMarkdown>
