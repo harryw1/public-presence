@@ -33,7 +33,7 @@ function PostCard({ post }) {
         </Link>
       </h2>
       
-      {/* Post metadata: date and reading time */}
+      {/* Post metadata: date, reading time, and author */}
       <div className="post-meta">
         <span className="post-date">
           <Calendar size={14} aria-hidden="true" />
@@ -45,6 +45,16 @@ function PostCard({ post }) {
           <BookOpen size={14} aria-hidden="true" />
           <span className="sr-only">Reading time: </span>
           {post.readingTime} min read
+        </span>
+
+        <span className="post-author">
+          <img
+            src={post.authorAvatar || '/images/authors/default-avatar.svg'}
+            alt={`${post.author} avatar`}
+            className="author-avatar"
+          />
+          <span className="sr-only">Written by </span>
+          {post.author}
         </span>
       </div>
       

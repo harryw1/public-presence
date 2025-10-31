@@ -17,9 +17,12 @@ import remarkGfm from 'remark-gfm'; // GitHub Flavored Markdown (tables, striket
 import remarkMath from 'remark-math'; // Math equation parsing
 import rehypeKatex from 'rehype-katex'; // LaTeX rendering
 import rehypeHighlight from 'rehype-highlight'; // Code syntax highlighting
-import { Calendar, BookOpen, User, Twitter, Linkedin, Facebook, Mail } from 'lucide-react';
-import { getPostBySlug, getPostNavigation } from '../utils/posts';
+import { Calendar, BookOpen, Twitter, Linkedin, Facebook, Mail } from 'lucide-react';
+import { getPostBySlug, getPostNavigation, getAllPosts } from '../utils/posts';
 import { formatDate } from '../utils/dateUtils';
+import SubscribeWidget from '../components/SubscribeWidget';
+import TableOfContents from '../components/TableOfContents';
+import RelatedPosts from '../components/RelatedPosts';
 
 // Import KaTeX CSS for math rendering
 import 'katex/dist/katex.min.css';
@@ -31,9 +34,10 @@ function Post() {
   // Example: /blog/my-first-post -> slug = "my-first-post"
   const { slug } = useParams();
   
-  // State for post data and navigation
+  // State for post data, navigation, and all posts for related posts
   const [post, setPost] = useState(null);
   const [navigation, setNavigation] = useState({ previous: null, next: null });
+  const [allPosts, setAllPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   
   // Load post data when slug changes
@@ -41,19 +45,21 @@ function Post() {
     async function loadPost() {
       setLoading(true);
       try {
-        const [loadedPost, nav] = await Promise.all([
+        const [loadedPost, nav, posts] = await Promise.all([
           getPostBySlug(slug),
-          getPostNavigation(slug)
+          getPostNavigation(slug),
+          getAllPosts()
         ]);
         setPost(loadedPost);
         setNavigation(nav);
+        setAllPosts(posts);
       } catch (error) {
         console.error('Failed to load post:', error);
       } finally {
         setLoading(false);
       }
     }
-    
+
     loadPost();
   }, [slug]);
   
@@ -142,7 +148,11 @@ function Post() {
             </span>
 
             <span className="post-author">
-              <User size={16} aria-hidden="true" />
+              <img
+                src={post.authorAvatar || '/images/authors/default-avatar.svg'}
+                alt={`${post.author} avatar`}
+                className="author-avatar"
+              />
               <span className="sr-only">Written by </span>
               {post.author}
             </span>
@@ -163,7 +173,10 @@ function Post() {
             </div>
           )}
         </header>
-        
+
+        {/* Table of contents - only shows for posts with 4+ headings */}
+        <TableOfContents content={post.content} />
+
         {/* Main post content
             ReactMarkdown converts markdown to HTML
             Plugins add extra features:
@@ -221,7 +234,13 @@ function Post() {
             <Mail size={20} aria-hidden="true" />
           </a>
         </div>
-        
+
+        {/* Newsletter subscribe widget */}
+        <SubscribeWidget />
+
+        {/* Related posts based on shared tags */}
+        <RelatedPosts currentPost={post} allPosts={allPosts} limit={3} />
+
         {/* Previous/Next post navigation */}
         {(navigation.previous || navigation.next) && (
           <nav className="post-navigation">
