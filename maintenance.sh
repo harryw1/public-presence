@@ -8,6 +8,7 @@ LOG_DIR="/home/harryweiss/logs"
 LOG_FILE="$LOG_DIR/maintenance.log"
 ALERT_THRESHOLD_DISK=85  # Alert if disk usage exceeds this percentage
 ALERT_THRESHOLD_MEMORY=90  # Alert if memory usage exceeds this percentage
+ALERT_EMAIL=""  # Add your email here to receive alerts (only when issues detected)
 
 # Create log directory if it doesn't exist
 mkdir -p "$LOG_DIR"
@@ -270,14 +271,81 @@ echo "  📅 Checked: $(date)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-log "✅ Maintenance completed!"
-
-# Exit with warning if any issues detected
+# Send email alert if issues detected and email is configured
 if [ "$DISK_USAGE" -gt "$ALERT_THRESHOLD_DISK" ] || \
    [ "$MEMORY_USAGE" -gt "$ALERT_THRESHOLD_MEMORY" ] || \
    [ "$FAILED_UNITS" -gt 0 ]; then
+
     warning "Some issues detected - please review the log"
+
+    # Send email notification if configured
+    if [ -n "$ALERT_EMAIL" ] && command -v mail &> /dev/null; then
+        SUBJECT="⚠️ publicpresence.org Maintenance Alert"
+
+        # Build detailed email body
+        EMAIL_BODY="Maintenance check found issues that require attention:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 SYSTEM STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"
+
+        # Add disk usage warning
+        if [ "$DISK_USAGE" -gt "$ALERT_THRESHOLD_DISK" ]; then
+            EMAIL_BODY+="⚠️ DISK USAGE: ${DISK_USAGE}% (Threshold: ${ALERT_THRESHOLD_DISK}%)
+   Available: ${DISK_AVAILABLE}
+   Action: Consider cleaning up old files or logs
+
+"
+        fi
+
+        # Add memory usage warning
+        if [ "$MEMORY_USAGE" -gt "$ALERT_THRESHOLD_MEMORY" ]; then
+            EMAIL_BODY+="⚠️ MEMORY USAGE: ${MEMORY_USAGE}% (Threshold: ${ALERT_THRESHOLD_MEMORY}%)
+   Available: ${MEMORY_AVAILABLE}
+   Action: Check for memory leaks or restart services
+
+"
+        fi
+
+        # Add failed services warning
+        if [ "$FAILED_UNITS" -gt 0 ]; then
+            EMAIL_BODY+="⚠️ FAILED SERVICES: ${FAILED_UNITS} systemd units failed
+   Action: Check service status with 'systemctl --failed'
+
+"
+        fi
+
+        EMAIL_BODY+="━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Full log file: $LOG_FILE
+
+To check system status:
+  ssh harryweiss@raspberrypi.local
+  ~/maintenance.sh
+
+To check disk usage:
+  df -h
+
+To check services:
+  sudo systemctl status nginx umami cloudflared postgresql
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Timestamp: $(date)
+Server: publicpresence.org (Raspberry Pi)
+"
+
+        # Send the email
+        echo "$EMAIL_BODY" | mail -s "$SUBJECT" "$ALERT_EMAIL"
+        log "Alert email sent to $ALERT_EMAIL"
+    fi
+
     exit 1
 fi
 
+log "✅ Maintenance completed successfully - no issues detected!"
 exit 0
