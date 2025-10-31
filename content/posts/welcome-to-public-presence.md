@@ -18,51 +18,14 @@ Through this platform, I'll be sharing insights from my work in greenhouse gas a
 
 The content here will focus on several interconnected themes:
 
-1. **Greenhouse Gas Accounting** - Methodologies, challenges, and innovations in measuring and tracking emissions
-2. **Public Transportation** - Policy, planning, and operations for sustainable transit systems
-3. **Sustainability Science** - Research-driven approaches to environmental challenges
-4. **Public Policy** - Evidence-based policy development for climate action
-5. **Urban Planning** - Creating resilient, sustainable cities
+1. **Public Transportation** - Policy, planning, and operations for sustainable transit systems
+2. **Sustainability Science** - Research-driven approaches to environmental challenges
+3. **Public Policy** - Evidence-based policy development for climate action
+4. **Urban Planning** - Creating resilient, sustainable cities
 
 ## A Note on Approach
 
 Throughout my career in public service, I've been committed to rigorous, data-driven approaches to sustainability challenges. This blog will reflect that commitment by grounding discussions in research, data, and practical experience.
-
-## Math and Code
-
-When needed, I'll include mathematical equations to explain concepts. For example, calculating emissions factors:
-
-$$
-E = A \\times EF
-$$
-
-Where:
-- $E$ = Total emissions
-- $A$ = Activity data
-- $EF$ = Emission factor
-
-I may also share code snippets and technical approaches:
-
-```python
-def calculate_emissions(activity_data, emission_factor):
-    """
-    Calculate total emissions from activity data and emission factor.
-    
-    Args:
-        activity_data (float): Amount of activity (e.g., kWh, miles)
-        emission_factor (float): Emissions per unit of activity
-    
-    Returns:
-        float: Total emissions
-    """
-    return activity_data * emission_factor
-
-# Example usage
-electricity_kwh = 10000
-ef_electricity = 0.000744  # metric tons CO2e per kWh (US grid average)
-emissions = calculate_emissions(electricity_kwh, ef_electricity)
-print(f"Total emissions: {emissions:.2f} metric tons CO2e")
-```
 
 ## Moving Forward
 
@@ -72,4 +35,4 @@ Thank you for reading, and I look forward to sharing more insights in future pos
 
 ---
 
-*Have thoughts or questions? Feel free to reach out through the channels listed on the [About](/about) page.*
+_Have thoughts or questions? Feel free to reach out through the channels listed on the [About](/about) page._
