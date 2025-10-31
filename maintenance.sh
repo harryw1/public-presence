@@ -118,9 +118,39 @@ if [ -f "$LOG_FILE" ]; then
         success "Maintenance log rotated"
     fi
 fi
+
+# Clean Pi-hole logs
+if command -v pihole &> /dev/null; then
+    sudo pihole flush > /dev/null 2>&1
+    success "Pi-hole logs flushed"
+fi
 echo ""
 
-# 4. Update package lists (but don't install)
+# 4. System cache cleanup
+log "🧹 Cleaning system caches..."
+
+# Clean npm cache (can grow to 1GB+)
+if command -v npm &> /dev/null; then
+    NPM_CACHE_SIZE=$(du -sh ~/.npm 2>/dev/null | cut -f1 || echo "0")
+    npm cache clean --force > /dev/null 2>&1
+    success "npm cache cleaned (was $NPM_CACHE_SIZE)"
+fi
+
+# Clean APT cache
+sudo apt clean > /dev/null 2>&1
+success "APT cache cleaned"
+
+# Auto-remove unused packages
+AUTOREMOVE_OUTPUT=$(sudo apt autoremove -y 2>&1)
+if echo "$AUTOREMOVE_OUTPUT" | grep -q "Freed space"; then
+    FREED_SPACE=$(echo "$AUTOREMOVE_OUTPUT" | grep "Freed space" | awk '{print $3, $4}')
+    success "Removed unused packages (freed $FREED_SPACE)"
+else
+    success "No unused packages to remove"
+fi
+echo ""
+
+# 5. Update package lists (but don't install)
 log "📦 Updating package lists..."
 sudo apt update > /dev/null 2>&1
 UPDATES_AVAILABLE=$(apt list --upgradable 2>/dev/null | grep -c upgradable)
@@ -132,7 +162,7 @@ else
 fi
 echo ""
 
-# 5. Check SSL certificate expiration
+# 6. Check SSL certificate expiration
 log "🔒 Checking SSL certificates..."
 if command -v certbot &> /dev/null; then
     CERT_STATUS=$(sudo certbot certificates 2>/dev/null | grep -A 2 "publicpresence.org" | grep "Expiry Date" || echo "Not found")
@@ -148,7 +178,7 @@ else
 fi
 echo ""
 
-# 6. Check database size
+# 7. Check database size
 log "💾 Checking database size..."
 if sudo systemctl is-active --quiet postgresql; then
     DB_SIZE=$(sudo -u postgres psql -d umami -t -c "SELECT pg_size_pretty(pg_database_size('umami'));" 2>/dev/null | xargs)
@@ -162,7 +192,7 @@ else
 fi
 echo ""
 
-# 7. Check backup status
+# 8. Check backup status
 log "💾 Checking backup status..."
 BACKUP_DIR="/home/harryweiss/backups/umami"
 if [ -d "$BACKUP_DIR" ]; then
@@ -189,7 +219,7 @@ else
 fi
 echo ""
 
-# 8. Check for failed systemd units
+# 9. Check for failed systemd units
 log "🔍 Checking for failed systemd units..."
 FAILED_UNITS=$(systemctl --failed --no-pager --no-legend | wc -l)
 if [ "$FAILED_UNITS" -gt 0 ]; then
@@ -200,7 +230,7 @@ else
 fi
 echo ""
 
-# 9. Network connectivity check
+# 10. Network connectivity check
 log "🌐 Checking network connectivity..."
 if ping -c 1 -W 2 cloudflare.com > /dev/null 2>&1; then
     success "Internet connection is active"
@@ -209,7 +239,7 @@ else
 fi
 echo ""
 
-# 10. Check cloudflared tunnel status
+# 11. Check cloudflared tunnel status
 log "🔌 Checking Cloudflare Tunnel status..."
 if cloudflared tunnel list > /dev/null 2>&1; then
     TUNNEL_STATUS=$(cloudflared tunnel list 2>/dev/null | grep raspberrypi-tunnel || echo "")
@@ -223,7 +253,7 @@ else
 fi
 echo ""
 
-# 11. Generate summary report
+# 12. Generate summary report
 log "📊 Maintenance Summary"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  💽 Disk: ${DISK_USAGE}% used (${DISK_AVAILABLE} free)"
