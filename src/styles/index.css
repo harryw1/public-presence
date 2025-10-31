@@ -1,0 +1,644 @@
+/**
+ * index.css - Main stylesheet
+ * 
+ * Design philosophy:
+ * - Clean, academic aesthetic inspired by sustainabilitybynumbers.com
+ * - Muted color palette focusing on readability
+ * - Typography-first design with clear hierarchy
+ * - Responsive layout that works on mobile and desktop
+ * - Minimal distractions, maximum content focus
+ */
+
+/* ==================== CSS Reset & Base Styles ==================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Color palette - muted, professional tones */
+  --color-primary: #2c5f2d;        /* Deep forest green - sustainability theme */
+  --color-primary-light: #4a7c59;
+  --color-text: #2d3748;            /* Dark gray for body text */
+  --color-text-light: #4a5568;      /* Medium gray for secondary text */
+  --color-background: #ffffff;      /* Clean white background */
+  --color-background-alt: #f7fafc;  /* Light gray for alternating sections */
+  --color-border: #e2e8f0;          /* Subtle borders */
+  --color-accent: #805ad5;          /* Purple accent for links */
+  
+  /* Typography */
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-mono: 'Monaco', 'Courier New', monospace;
+  
+  /* Spacing scale */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4rem;     /* 64px */
+  
+  /* Layout */
+  --max-width: 800px;    /* Optimal reading width */
+  --max-width-wide: 1200px;
+}
+
+/* ==================== Typography ==================== */
+
+body {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 2rem;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--space-sm);
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin-bottom: var(--space-md);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* ==================== Layout Components ==================== */
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.container-wide {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* ==================== Header & Navigation ==================== */
+
+.site-header {
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-lg) 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-title {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.site-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  gap: var(--space-xl);
+  font-family: var(--font-sans);
+}
+
+.site-nav a {
+  color: var(--color-text-light);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  color: var(--color-primary);
+}
+
+/* ==================== Main Content ==================== */
+
+.main-content {
+  min-height: calc(100vh - 200px);
+  padding: var(--space-3xl) 0;
+}
+
+/* ==================== Homepage Styles ==================== */
+
+.hero {
+  text-align: center;
+  padding: var(--space-3xl) 0;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-3xl);
+}
+
+.hero h1 {
+  margin-bottom: var(--space-md);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--color-text-light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.recent-posts-section {
+  margin-top: var(--space-3xl);
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: var(--space-xl);
+  text-align: center;
+}
+
+/* ==================== Blog Post Cards ==================== */
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.post-card {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-2xl);
+}
+
+.post-card:last-child {
+  border-bottom: none;
+}
+
+.post-card h2 {
+  border: none;
+  padding: 0;
+  margin-top: 0;
+}
+
+.post-card h2 a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.post-card h2 a:hover {
+  color: var(--color-primary);
+}
+
+.post-meta {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--space-md);
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.post-date,
+.post-reading-time {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.post-excerpt {
+  color: var(--color-text-light);
+  margin-bottom: var(--space-md);
+}
+
+.post-tags {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-md);
+}
+
+.tag {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  padding: var(--space-xs) var(--space-sm);
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text-light);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  text-decoration: none;
+}
+
+.read-more {
+  font-family: var(--font-sans);
+  color: var(--color-accent);
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.read-more:hover {
+  color: var(--color-primary);
+}
+
+/* ==================== Blog Archive Page ==================== */
+
+.blog-header {
+  margin-bottom: var(--space-3xl);
+}
+
+.search-filter-bar {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-2xl);
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 250px;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-background);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.filter-tags {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--color-text-light);
+}
+
+.tag-filter {
+  cursor: pointer;
+}
+
+.tag-filter.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* ==================== Individual Post Page ==================== */
+
+.post-header {
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.post-title {
+  margin-bottom: var(--space-md);
+}
+
+.post-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+/* Markdown content styling */
+.post-content h2 {
+  margin-top: var(--space-2xl);
+}
+
+.post-content h3 {
+  margin-top: var(--space-xl);
+}
+
+.post-content ul,
+.post-content ol {
+  margin-bottom: var(--space-md);
+  padding-left: var(--space-xl);
+}
+
+.post-content li {
+  margin-bottom: var(--space-sm);
+}
+
+.post-content blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding-left: var(--space-lg);
+  margin: var(--space-xl) 0;
+  font-style: italic;
+  color: var(--color-text-light);
+}
+
+.post-content code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background-color: var(--color-background-alt);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.post-content pre {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  padding: var(--space-lg);
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: var(--space-xl) 0;
+}
+
+.post-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin: var(--space-xl) 0;
+}
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-xl) 0;
+}
+
+.post-content th,
+.post-content td {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.post-content th {
+  background-color: var(--color-background-alt);
+  font-weight: 600;
+}
+
+/* LaTeX/KaTeX math styling */
+.katex {
+  font-size: 1.1em;
+}
+
+.katex-display {
+  margin: var(--space-xl) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ==================== Post Navigation ==================== */
+
+.post-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--color-border);
+}
+
+.nav-link {
+  flex: 1;
+  padding: var(--space-lg);
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  text-decoration: none;
+}
+
+.nav-link-label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--space-xs);
+}
+
+.nav-link:hover .nav-link-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.nav-link-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+/* ==================== Social Share Buttons ==================== */
+
+.social-share {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.share-button {
+  font-family: var(--font-sans);
+  padding: var(--space-sm) var(--space-lg);
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.share-button:hover {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  text-decoration: none;
+}
+
+/* ==================== About Page ==================== */
+
+.about-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.bio-section {
+  margin-bottom: var(--space-3xl);
+}
+
+/* ==================== Footer ==================== */
+
+.site-footer {
+  background-color: var(--color-background-alt);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-2xl) 0;
+  margin-top: var(--space-3xl);
+  font-family: var(--font-sans);
+  color: var(--color-text-light);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+/* ==================== Responsive Design ==================== */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .site-header .container {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  .site-nav {
+    gap: var(--space-lg);
+  }
+  
+  .search-filter-bar {
+    flex-direction: column;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .post-navigation {
+    flex-direction: column;
+  }
+  
+  .social-share {
+    flex-wrap: wrap;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ==================== Utilities ==================== */
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--color-text-light);
+}
+
+.mt-lg {
+  margin-top: var(--space-lg);
+}
+
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: var(--space-3xl);
+  color: var(--color-text-light);
+}
+
+/* Error state */
+.error {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  padding: var(--space-lg);
+  border-radius: 6px;
+  color: #c33;
+}
