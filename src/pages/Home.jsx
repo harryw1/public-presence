@@ -38,7 +38,7 @@ function Home() {
       <div className="container">
         {/* Hero section - site introduction */}
         <section className="hero">
-          <h1>Public Presence</h1>
+          <h1>publicpresence.org</h1>
           <p className="hero-subtitle">
             Exploring sustainability science, public planning, policy, and 
             public transportation. Committed to bettering the public good 

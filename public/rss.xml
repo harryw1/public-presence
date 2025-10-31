@@ -3,11 +3,11 @@
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Public Presence</title>
+    <title>publicpresence.org</title>
     <link>https://publicpresence.org</link>
     <description>Personal blog focused on sustainability science, public planning, policy, and public transportation</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Oct 2025 02:12:41 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 31 Oct 2025 02:48:30 GMT</lastBuildDate>
     <atom:link href="https://publicpresence.org/rss.xml" rel="self" type="application/rss+xml" />
     
     <item>

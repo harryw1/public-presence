@@ -60,7 +60,7 @@ function parsePost(filepath) {
     date: frontmatter.date || new Date().toISOString(),
     excerpt: frontmatter.excerpt || '',
     tags: frontmatter.tags || [],
-    author: frontmatter.author || 'Public Presence',
+    author: frontmatter.author || 'Harrison Weiss',
     content: markdownContent
   };
 }
@@ -114,7 +114,7 @@ function generateRSS(posts) {
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Public Presence</title>
+    <title>publicpresence.org</title>
     <link>${siteUrl}</link>
     <description>Personal blog focused on sustainability science, public planning, policy, and public transportation</description>
     <language>en-us</language>

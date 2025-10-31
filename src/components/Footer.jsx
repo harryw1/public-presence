@@ -19,7 +19,7 @@ function Footer() {
         <div className="footer-content">
           {/* Copyright notice */}
           <div className="footer-copyright">
-            © {currentYear} Public Presence. All rights reserved.
+            © {currentYear} publicpresence.org. All rights reserved.
           </div>
           
           {/* Footer navigation links */}

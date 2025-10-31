@@ -48,11 +48,11 @@ function About() {
           </p>
           
           <p>
-            Public Presence serves as a platform to explore ideas at the 
-            intersection of sustainability science, public planning, policy, 
-            and transportation. Through this blog, I aim to share insights from 
-            my work, discuss emerging research and best practices, and contribute 
-            to broader conversations about building more sustainable and equitable 
+            publicpresence.org serves as a platform to explore ideas at the
+            intersection of sustainability science, public planning, policy,
+            and transportation. Through this blog, I aim to share insights from
+            my work, discuss emerging research and best practices, and contribute
+            to broader conversations about building more sustainable and equitable
             public systems.
           </p>
         </section>

@@ -4,7 +4,7 @@
 # Run this on your Pi to diagnose why the site shows blank
 
 echo "=========================================="
-echo "Public Presence - Diagnostic Report"
+echo "publicpresence.org - Diagnostic Report"
 echo "=========================================="
 echo ""
 

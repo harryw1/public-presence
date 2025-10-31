@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Public Presence Blog Deployment Script
+# publicpresence.org Blog Deployment Script
 # Integrates with existing publicpresence.org infrastructure
 # Builds the blog and deploys to Nginx
 
@@ -39,7 +39,7 @@ print_error() {
 }
 
 # ===== MAIN DEPLOYMENT PROCESS =====
-print_header "Deploying Public Presence Blog"
+print_header "Deploying publicpresence.org Blog"
 
 # Navigate to project directory
 echo -e "${YELLOW}Navigating to project directory...${NC}"

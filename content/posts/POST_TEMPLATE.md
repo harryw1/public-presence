@@ -3,7 +3,7 @@ title: "Your Post Title Here"
 date: "YYYY-MM-DD"
 excerpt: "A brief 1-2 sentence description of your post that will appear in blog listings and search results. Keep it concise and compelling."
 tags: ["tag1", "tag2", "tag3"]
-author: "Public Presence"
+author: "Harrison Weiss"
 ---
 
 # Your Post Title Here

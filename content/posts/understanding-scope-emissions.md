@@ -3,7 +3,7 @@ title: "Understanding Scope 1, 2, and 3 Emissions in Public Sector Accounting"
 date: "2025-01-20"
 excerpt: "A comprehensive look at how public sector organizations categorize and measure greenhouse gas emissions across different scopes."
 tags: ["GHG accounting", "public sector", "climate policy", "sustainability"]
-author: "Public Presence"
+author: "Harrison Weiss"
 ---
 
 # Understanding Scope 1, 2, and 3 Emissions in Public Sector Accounting

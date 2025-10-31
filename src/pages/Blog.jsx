@@ -10,6 +10,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { X } from 'lucide-react';
 import PostCard from '../components/PostCard';
 import { getAllPosts, getAllTags, searchPosts, getPostsByTag } from '../utils/posts';
 
@@ -143,12 +144,13 @@ function Blog() {
           
           {/* Clear filters button (only show if filters are active) */}
           {(searchQuery || selectedTag) && (
-            <button 
+            <button
               onClick={clearFilters}
               className="tag tag-filter"
               style={{ cursor: 'pointer' }}
+              aria-label="Clear all filters"
             >
-              Clear filters ✕
+              Clear filters <X size={14} aria-hidden="true" />
             </button>
           )}
         </div>

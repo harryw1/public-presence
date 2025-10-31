@@ -9,6 +9,7 @@
  */
 
 import { Link } from 'react-router-dom';
+import { Calendar, BookOpen } from 'lucide-react';
 import { formatDate } from '../utils/dateUtils';
 
 /**
@@ -35,13 +36,15 @@ function PostCard({ post }) {
       {/* Post metadata: date and reading time */}
       <div className="post-meta">
         <span className="post-date">
-          {/* Clock icon (Unicode character) */}
-          📅 {formatDate(post.date)}
+          <Calendar size={14} aria-hidden="true" />
+          <span className="sr-only">Published on </span>
+          {formatDate(post.date)}
         </span>
-        
+
         <span className="post-reading-time">
-          {/* Book icon (Unicode character) */}
-          📖 {post.readingTime} min read
+          <BookOpen size={14} aria-hidden="true" />
+          <span className="sr-only">Reading time: </span>
+          {post.readingTime} min read
         </span>
       </div>
       

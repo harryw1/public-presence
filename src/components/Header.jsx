@@ -20,7 +20,7 @@ function Header() {
       <div className="container">
         {/* Site branding - links to homepage */}
         <div className="site-title">
-          <Link to="/">Public Presence</Link>
+          <Link to="/">publicpresence.org</Link>
         </div>
         
         {/* Main navigation

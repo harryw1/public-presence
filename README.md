@@ -1,4 +1,4 @@
-# Public Presence
+# publicpresence.org
 
 A professional blog platform built with React + Vite, focused on sustainability science, public planning, policy, and public transportation.
 
@@ -53,7 +53,7 @@ title: "My Blog Post Title"
 date: "2025-01-30"
 excerpt: "A brief description that appears in previews"
 tags: ["sustainability", "policy"]
-author: "Public Presence"
+author: "Harrison Weiss"
 ---
 
 # Your Content Here

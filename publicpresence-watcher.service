@@ -1,5 +1,5 @@
 [Unit]
-Description=Public Presence Blog File Watcher
+Description=publicpresence.org Blog File Watcher
 Documentation=https://publicpresence.org
 After=network.target
 

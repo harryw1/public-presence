@@ -117,7 +117,7 @@ Add this configuration:
 
 ```ini
 [Unit]
-Description=Public Presence Blog File Watcher
+Description=publicpresence.org Blog File Watcher
 Documentation=https://publicpresence.org
 After=network.target
 
@@ -229,7 +229,7 @@ title: "My First Blog Post"
 date: "2025-01-30"
 excerpt: "Getting started with my new blog"
 tags: ["introduction", "sustainability"]
-author: "Public Presence"
+author: "Harrison Weiss"
 ---
 
 # My First Blog Post

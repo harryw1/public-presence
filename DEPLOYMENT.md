@@ -1,6 +1,6 @@
 # Deployment Guide for Raspberry Pi
 
-This guide provides step-by-step instructions for deploying Public Presence to a Raspberry Pi running nginx.
+This guide provides step-by-step instructions for deploying publicpresence.org to a Raspberry Pi running nginx.
 
 ## Prerequisites Checklist
 
@@ -163,7 +163,7 @@ Add the following:
 
 ```ini
 [Unit]
-Description=Public Presence Blog File Watcher
+Description=publicpresence.org Blog File Watcher
 Documentation=https://github.com/yourusername/public-presence
 After=network.target
 
@@ -258,12 +258,12 @@ Add the following:
 ```bash
 #!/bin/bash
 
-# Public Presence Blog Update Script
+# publicpresence.org Blog Update Script
 # This script pulls latest changes and rebuilds the site
 
 set -e  # Exit on error
 
-echo "🔄 Updating Public Presence blog..."
+echo "🔄 Updating publicpresence.org blog..."
 
 # Navigate to project directory
 cd /home/pi/public-presence
@@ -318,7 +318,7 @@ title: "My New Post"
 date: "2025-01-30"
 excerpt: "Brief description"
 tags: ["sustainability", "policy"]
-author: "Public Presence"
+author: "Harrison Weiss"
 ---
 
 # My New Post

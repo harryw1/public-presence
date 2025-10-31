@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Personal blog focused on sustainability science, public planning, policy, and public transportation",
-  "author": "Public Presence",
+  "author": "Harrison Weiss",
   "scripts": {
     "dev": "vite",
     "build": "node scripts/prebuild.js && vite build",
@@ -17,6 +17,7 @@
     "chokidar": "^4.0.3",
     "express": "^5.1.0",
     "gray-matter": "^4.0.3",
+    "lucide-react": "^0.548.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-markdown": "^10.1.0",

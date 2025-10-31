@@ -177,7 +177,7 @@ function initWatcher() {
  */
 function main() {
   console.log('═══════════════════════════════════════════════');
-  console.log('  Public Presence - File Watcher');
+  console.log('  publicpresence.org - File Watcher');
   console.log('═══════════════════════════════════════════════\n');
   
   try {

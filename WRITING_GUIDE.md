@@ -33,7 +33,7 @@ title: "Your Post Title"
 date: "2025-01-30"
 excerpt: "A brief description (1-2 sentences)"
 tags: ["tag1", "tag2", "tag3"]
-author: "Public Presence"
+author: "Harrison Weiss"
 ---
 ```
 
@@ -43,7 +43,7 @@ author: "Public Presence"
 - **date** (required): Publication date in YYYY-MM-DD format
 - **excerpt** (required): Brief description shown in post listings
 - **tags** (required): Array of relevant tags for categorization
-- **author** (optional): Defaults to "Public Presence" if omitted
+- **author** (optional): Defaults to "Harrison Weiss" if omitted
 
 ### Step 3: Write Your Content
 

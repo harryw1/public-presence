@@ -42,7 +42,7 @@ function processPost(filepath) {
     date: frontmatter.date || new Date().toISOString(),
     excerpt: frontmatter.excerpt || '',
     tags: frontmatter.tags || [],
-    author: frontmatter.author || 'Public Presence',
+    author: frontmatter.author || 'Harrison Weiss',
     content: markdownContent,
     readingTime: calculateReadingTime(markdownContent)
   };

@@ -17,6 +17,7 @@ import remarkGfm from 'remark-gfm'; // GitHub Flavored Markdown (tables, striket
 import remarkMath from 'remark-math'; // Math equation parsing
 import rehypeKatex from 'rehype-katex'; // LaTeX rendering
 import rehypeHighlight from 'rehype-highlight'; // Code syntax highlighting
+import { Calendar, BookOpen, User, Twitter, Linkedin, Facebook, Mail } from 'lucide-react';
 import { getPostBySlug, getPostNavigation } from '../utils/posts';
 import { formatDate } from '../utils/dateUtils';
 
@@ -62,12 +63,12 @@ function Post() {
    */
   useEffect(() => {
     if (post) {
-      document.title = `${post.title} | Public Presence`;
+      document.title = `${post.title} | publicpresence.org`;
     }
     
     // Cleanup: reset title when component unmounts
     return () => {
-      document.title = 'Public Presence';
+      document.title = 'publicpresence.org';
     };
   }, [post]);
   
@@ -129,15 +130,21 @@ function Post() {
           
           <div className="post-meta">
             <span className="post-date">
-              📅 {formatDate(post.date)}
+              <Calendar size={16} aria-hidden="true" />
+              <span className="sr-only">Published on </span>
+              {formatDate(post.date)}
             </span>
-            
+
             <span className="post-reading-time">
-              📖 {post.readingTime} min read
+              <BookOpen size={16} aria-hidden="true" />
+              <span className="sr-only">Reading time: </span>
+              {post.readingTime} min read
             </span>
-            
+
             <span className="post-author">
-              ✍️ {post.author}
+              <User size={16} aria-hidden="true" />
+              <span className="sr-only">Written by </span>
+              {post.author}
             </span>
           </div>
           
@@ -176,35 +183,43 @@ function Post() {
         {/* Social sharing buttons */}
         <div className="social-share">
           <strong>Share this post:</strong>
-          <a 
-            href={shareLinks.twitter} 
-            target="_blank" 
+          <a
+            href={shareLinks.twitter}
+            target="_blank"
             rel="noopener noreferrer"
             className="share-button"
+            aria-label="Share on Twitter"
           >
-            🐦 Twitter
+            <Twitter size={18} aria-hidden="true" />
+            <span>Twitter</span>
           </a>
-          <a 
-            href={shareLinks.linkedin} 
-            target="_blank" 
+          <a
+            href={shareLinks.linkedin}
+            target="_blank"
             rel="noopener noreferrer"
             className="share-button"
+            aria-label="Share on LinkedIn"
           >
-            💼 LinkedIn
+            <Linkedin size={18} aria-hidden="true" />
+            <span>LinkedIn</span>
           </a>
-          <a 
-            href={shareLinks.facebook} 
-            target="_blank" 
+          <a
+            href={shareLinks.facebook}
+            target="_blank"
             rel="noopener noreferrer"
             className="share-button"
+            aria-label="Share on Facebook"
           >
-            📘 Facebook
+            <Facebook size={18} aria-hidden="true" />
+            <span>Facebook</span>
           </a>
-          <a 
+          <a
             href={shareLinks.email}
             className="share-button"
+            aria-label="Share via Email"
           >
-            ✉️ Email
+            <Mail size={18} aria-hidden="true" />
+            <span>Email</span>
           </a>
         </div>
         

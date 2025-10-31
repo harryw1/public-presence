@@ -247,10 +247,30 @@ a:hover {
 }
 
 .post-date,
-.post-reading-time {
+.post-reading-time,
+.post-author {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
+}
+
+/* Icon alignment for Lucide React icons in metadata */
+.post-meta svg {
+  flex-shrink: 0;
+  vertical-align: text-bottom;
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 .post-excerpt {
@@ -384,6 +404,45 @@ a:hover {
   margin-bottom: var(--space-sm);
 }
 
+/* Nested list indentation */
+.post-content li ul,
+.post-content li ol {
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.post-content ul ul,
+.post-content ol ul,
+.post-content ul ol,
+.post-content ol ol {
+  padding-left: 1.5rem;
+}
+
+/* GitHub-style task lists */
+.post-content input[type="checkbox"] {
+  margin-right: var(--space-sm);
+  cursor: pointer;
+}
+
+.post-content li.task-list-item {
+  list-style: none;
+  margin-left: -1.5rem;
+}
+
+/* Enhanced link styling */
+.post-content a {
+  color: #805ad5;
+  text-decoration: underline;
+  text-decoration-color: rgba(128, 90, 213, 0.3);
+  text-underline-offset: 3px;
+  transition: all 0.2s ease;
+}
+
+.post-content a:hover {
+  color: var(--color-primary);
+  text-decoration-color: var(--color-primary);
+}
+
 .post-content blockquote {
   border-left: 4px solid var(--color-primary);
   padding-left: var(--space-lg);
@@ -426,6 +485,8 @@ a:hover {
   width: 100%;
   border-collapse: collapse;
   margin: var(--space-xl) 0;
+  display: block;
+  overflow-x: auto;
 }
 
 .post-content th,
@@ -438,6 +499,18 @@ a:hover {
 .post-content th {
   background-color: var(--color-background-alt);
   font-weight: 600;
+}
+
+/* Table responsiveness for mobile */
+@media (max-width: 768px) {
+  .post-content table {
+    font-size: 0.9rem;
+  }
+
+  .post-content th,
+  .post-content td {
+    padding: 0.4rem 0.6rem;
+  }
 }
 
 /* LaTeX/KaTeX math styling */
@@ -526,6 +599,10 @@ a:hover {
   color: white;
   border-color: var(--color-primary);
   text-decoration: none;
+}
+
+.share-button svg {
+  flex-shrink: 0;
 }
 
 /* ==================== About Page ==================== */
