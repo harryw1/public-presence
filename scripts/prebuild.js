@@ -34,6 +34,7 @@ function getPostFiles() {
   
   return fs.readdirSync(POSTS_DIR)
     .filter(file => file.endsWith('.md'))
+    .filter(file => file !== 'POST_TEMPLATE.md') // Exclude template
     .map(file => path.join(POSTS_DIR, file));
 }
 
