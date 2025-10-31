@@ -44,33 +44,55 @@ function SubscribeWidget({
 
     setStatus('submitting');
 
-    // Get Kit credentials from environment variables
+    // Check for Cloudflare Worker endpoint (preferred method)
+    const workerUrl = import.meta.env.VITE_NEWSLETTER_WORKER_URL;
+
+    // Fallback to direct Kit API (less secure, for development)
     const kitApiKey = import.meta.env.VITE_KIT_API_KEY;
     const kitFormId = import.meta.env.VITE_KIT_FORM_ID;
 
-    // Check if Kit is configured
-    if (!kitApiKey || !kitFormId) {
-      console.error('Kit API credentials not configured. Please set VITE_KIT_API_KEY and VITE_KIT_FORM_ID in your .env file.');
+    // Determine which method to use
+    const useWorker = !!workerUrl;
+    const useDirect = !useWorker && kitApiKey && kitFormId;
+
+    if (!useWorker && !useDirect) {
+      console.error('Newsletter service not configured. Set either VITE_NEWSLETTER_WORKER_URL or both VITE_KIT_API_KEY and VITE_KIT_FORM_ID');
       setStatus('error');
       setMessage('Newsletter signup is not configured yet. Please try again later.');
       return;
     }
 
     try {
-      // Subscribe to Kit form
-      const response = await fetch(`https://api.kit.com/v3/forms/${kitFormId}/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          api_key: kitApiKey,
-          email: email,
-          // Optional: add custom fields or tags
-          // tags: ['blog-subscriber'],
-          // fields: { first_name: 'John' }
-        }),
-      });
+      let response;
+
+      if (useWorker) {
+        // Method 1: Use Cloudflare Worker proxy (secure)
+        response = await fetch(workerUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            // Optional: add custom fields or tags
+            // tags: ['blog-subscriber'],
+            // fields: { first_name: 'John' }
+          }),
+        });
+      } else {
+        // Method 2: Direct Kit API call (fallback for development)
+        console.warn('Using direct Kit API - consider using Cloudflare Worker for production');
+        response = await fetch(`https://api.kit.com/v3/forms/${kitFormId}/subscribe`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            api_key: kitApiKey,
+            email: email,
+          }),
+        });
+      }
 
       const data = await response.json();
 
@@ -85,17 +107,23 @@ function SubscribeWidget({
           setMessage('');
         }, 5000);
       } else {
-        // Handle Kit API errors
-        throw new Error(data.message || 'Subscription failed');
+        // Handle errors from Kit or Worker
+        throw new Error(data.error || data.message || 'Subscription failed');
       }
     } catch (error) {
-      console.error('Kit subscription error:', error);
+      console.error('Newsletter subscription error:', error);
       setStatus('error');
-      setMessage(
-        error.message === 'Subscription failed'
-          ? 'Unable to subscribe. Please check your email address.'
-          : 'Something went wrong. Please try again later.'
-      );
+
+      // User-friendly error messages
+      if (error.message.includes('Origin not allowed')) {
+        setMessage('Access denied. Please contact the site administrator.');
+      } else if (error.message.includes('Invalid email')) {
+        setMessage('Please enter a valid email address.');
+      } else if (error.message === 'Failed to fetch') {
+        setMessage('Network error. Please check your connection and try again.');
+      } else {
+        setMessage('Something went wrong. Please try again later.');
+      }
     }
   };
 
