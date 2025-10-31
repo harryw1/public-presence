@@ -1,13 +1,17 @@
 /**
  * About.jsx - About page component
- * 
+ *
  * Professional bio emphasizing:
  * - Career trajectory through NJ Transit, private sector, NYC DCAS
  * - Commitment to sustainability and public sector work
  * - Professional background and expertise
  */
 
+import { usePageTitle } from '../hooks/usePageTitle';
+
 function About() {
+  // Set page title
+  usePageTitle('About');
   return (
     <div className="main-content">
       <div className="container about-content">
@@ -60,50 +64,46 @@ function About() {
         {/* Areas of focus */}
         <section className="bio-section">
           <h2>Areas of Focus</h2>
-          <ul>
-            <li>
-              <strong>Greenhouse Gas Accounting:</strong> Developing methodologies 
-              for measuring and tracking emissions across complex public sector 
+          <div>
+            <p>
+              <strong>Greenhouse Gas Accounting:</strong> Developing methodologies
+              for measuring and tracking emissions across complex public sector
               operations
-            </li>
-            <li>
-              <strong>Public Transportation:</strong> Planning and policy for 
+            </p>
+            <p>
+              <strong>Public Transportation:</strong> Planning and policy for
               sustainable, equitable transit systems
-            </li>
-            <li>
-              <strong>Sustainability Science:</strong> Applying research and 
+            </p>
+            <p>
+              <strong>Sustainability Science:</strong> Applying research and
               data analysis to environmental challenges
-            </li>
-            <li>
-              <strong>Public Policy:</strong> Evidence-based policy development 
+            </p>
+            <p>
+              <strong>Public Policy:</strong> Evidence-based policy development
               for climate action and sustainability
-            </li>
-            <li>
-              <strong>Urban Planning:</strong> Creating resilient, sustainable 
+            </p>
+            <p>
+              <strong>Urban Planning:</strong> Creating resilient, sustainable
               cities through integrated planning approaches
-            </li>
-          </ul>
+            </p>
+          </div>
         </section>
         
         {/* Contact/connect section */}
         <section className="bio-section">
           <h2>Connect</h2>
           <p>
-            The views expressed on this site are my own and do not necessarily 
+            The views expressed on this site are my own and do not necessarily
             reflect those of my employer or any other organization.
           </p>
-          
-          {/* Optional: Add your contact information or social links here */}
-          {/*
+
           <p>
             You can connect with me on:
           </p>
           <ul>
-            <li><a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-            <li><a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer">Twitter</a></li>
-            <li><a href="mailto:your.email@example.com">Email</a></li>
+            <li><a href="https://www.linkedin.com/in/harrisonrweiss1/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="https://github.com/harryw1" target="_blank" rel="noopener noreferrer">GitHub</a></li>
           </ul>
-          */}
         </section>
       </div>
     </div>

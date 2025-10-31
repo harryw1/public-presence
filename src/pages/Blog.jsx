@@ -13,8 +13,11 @@ import { useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
 import PostCard from '../components/PostCard';
 import { getAllPosts, getAllTags, searchPosts, getPostsByTag } from '../utils/posts';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 function Blog() {
+  // Set page title
+  usePageTitle('Blog Archive');
   // Get URL search parameters (for tag filtering via URL)
   // Example: /blog?tag=sustainability
   const [searchParams, setSearchParams] = useSearchParams();

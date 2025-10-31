@@ -11,8 +11,11 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PostCard from '../components/PostCard';
 import { getRecentPosts } from '../utils/posts';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 function Home() {
+  // Set page title
+  usePageTitle();
   // State for posts and loading status
   const [recentPosts, setRecentPosts] = useState([]);
   const [loading, setLoading] = useState(true);

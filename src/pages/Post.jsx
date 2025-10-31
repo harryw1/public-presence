@@ -24,6 +24,7 @@ import { formatDate } from '../utils/dateUtils';
 import SubscribeWidget from '../components/SubscribeWidget';
 import TableOfContents from '../components/TableOfContents';
 import RelatedPosts from '../components/RelatedPosts';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 // Import KaTeX CSS for math rendering
 import 'katex/dist/katex.min.css';
@@ -40,7 +41,10 @@ function Post() {
   const [navigation, setNavigation] = useState({ previous: null, next: null });
   const [allPosts, setAllPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
+  // Set page title dynamically based on post
+  usePageTitle(post?.title);
+
   // Load post data when slug changes
   useEffect(() => {
     async function loadPost() {
@@ -63,22 +67,7 @@ function Post() {
 
     loadPost();
   }, [slug]);
-  
-  /**
-   * Update document title when post loads
-   * This improves SEO and browser tab display
-   */
-  useEffect(() => {
-    if (post) {
-      document.title = `${post.title} | publicpresence.org`;
-    }
-    
-    // Cleanup: reset title when component unmounts
-    return () => {
-      document.title = 'publicpresence.org';
-    };
-  }, [post]);
-  
+
   /**
    * Scroll to top when post changes
    * Improves UX when navigating between posts
