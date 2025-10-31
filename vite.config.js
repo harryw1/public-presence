@@ -4,9 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  
+
   // Build configuration optimized for Raspberry Pi deployment
   build: {
+    // Output directory to match your deploy.sh script
+    outDir: 'build',
+
     // Generate smaller chunks for better performance on low-resource devices
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
@@ -27,13 +30,13 @@ export default defineConfig({
       }
     }
   },
-  
+
   // Server configuration for development
   server: {
     port: 3000,
     host: true // Allow access from network (useful for testing on Pi)
   },
-  
+
   // Ensure proper base path for deployment
   base: '/'
 })
