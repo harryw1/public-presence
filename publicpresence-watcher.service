@@ -1,0 +1,25 @@
+[Unit]
+Description=Public Presence Blog File Watcher
+Documentation=https://publicpresence.org
+After=network.target
+
+[Service]
+Type=simple
+User=harryweiss
+Group=harryweiss
+WorkingDirectory=/home/harryweiss/publicpresence
+ExecStart=/usr/bin/node /home/harryweiss/publicpresence/scripts/watcher.js
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=publicpresence-watcher
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
