@@ -1,6 +1,6 @@
 ---
 title: "Welcome to Public Presence"
-date: "2025-01-15"
+date: "2025-10-31"
 excerpt: "An introduction to this blog and its mission to explore sustainability science, public planning, policy, and public transportation."
 tags: ["introduction", "sustainability", "public sector"]
 author: "Harrison Weiss"
