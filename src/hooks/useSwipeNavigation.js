@@ -6,8 +6,8 @@
  * - Touch gestures on mobile devices
  * - Mouse drag gestures
  *
- * Swipe right (→) = Navigate back
- * Swipe left (←) = Navigate forward
+ * Swipe left (←) = Navigate back
+ * Swipe right (→) = Navigate forward
  */
 
 import { useEffect, useRef } from 'react';
@@ -31,7 +31,8 @@ export default function useSwipeNavigation(options = {}) {
   } = options;
 
   const lastNavigationTime = useRef(0);
-  const debounceTime = 300;
+
+  const debounceTime = 500;
 
   /**
    * Check if we should allow navigation (debounce)
@@ -83,18 +84,18 @@ export default function useSwipeNavigation(options = {}) {
 
       if (!canNavigate()) return;
 
-      // xDir: -1 = swipe left (forward), 1 = swipe right (back)
-      if (xDir === 1) {
-        // Swipe right = go back
-        if (onSwipeRight) {
-          onSwipeRight();
+      // xDir: -1 = swipe left (back), 1 = swipe right (forward)
+      if (xDir === -1) {
+        // Swipe left = go back
+        if (onSwipeLeft) {
+          onSwipeLeft();
         } else if (window.history.length > 1) {
           navigate(-1);
         }
-      } else if (xDir === -1) {
-        // Swipe left = go forward
-        if (onSwipeLeft) {
-          onSwipeLeft();
+      } else if (xDir === 1) {
+        // Swipe right = go forward
+        if (onSwipeRight) {
+          onSwipeRight();
         } else {
           navigate(1);
         }
@@ -105,7 +106,7 @@ export default function useSwipeNavigation(options = {}) {
       eventOptions: { passive: true },
       axis: 'x', // Only track horizontal movement
       threshold: 80, // Minimum distance to trigger
-      enabled, // Pass enabled to the gesture config
+      enabled,
     }
   );
 
@@ -124,18 +125,18 @@ export default function useSwipeNavigation(options = {}) {
 
       if (!canNavigate()) return;
 
-      // swipeX: -1 = swipe left (forward), 1 = swipe right (back)
-      if (swipeX === 1) {
-        // Swipe right = go back
-        if (onSwipeRight) {
-          onSwipeRight();
+      // swipeX: -1 = swipe left (back), 1 = swipe right (forward)
+      if (swipeX === -1) {
+        // Swipe left = go back
+        if (onSwipeLeft) {
+          onSwipeLeft();
         } else if (window.history.length > 1) {
           navigate(-1);
         }
-      } else if (swipeX === -1) {
-        // Swipe left = go forward
-        if (onSwipeLeft) {
-          onSwipeLeft();
+      } else if (swipeX === 1) {
+        // Swipe right = go forward
+        if (onSwipeRight) {
+          onSwipeRight();
         } else {
           navigate(1);
         }
@@ -150,7 +151,7 @@ export default function useSwipeNavigation(options = {}) {
         velocity: 0.3, // Minimum velocity
       },
       filterTaps: true, // Don't trigger on clicks
-      enabled, // Pass enabled to the gesture config
+      enabled,
     }
   );
 }
