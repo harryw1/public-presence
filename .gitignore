@@ -24,3 +24,7 @@ build
 *.sln
 *.sw?
 .env
+
+# Generated files
+public/posts.json
+public/rss.xml
