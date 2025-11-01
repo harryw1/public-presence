@@ -14,17 +14,33 @@ import Home from './pages/Home';
 import Blog from './pages/Blog';
 import Post from './pages/Post';
 import About from './pages/About';
+import useSwipeNavigation from './hooks/useSwipeNavigation';
 import './styles/index.css';
 
 /**
  * Main App component
- * 
+ *
  * BrowserRouter provides routing context for the entire application
  * Routes define which component to render for each URL path
  */
 function App() {
   return (
     <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+}
+
+/**
+ * AppContent - Inner component that has access to router context
+ * This allows us to use useSwipeNavigation which needs the navigate hook
+ */
+function AppContent() {
+  // Enable swipe navigation (trackpad gestures for forward/back)
+  useSwipeNavigation({ enabled: true });
+
+  return (
+    <>
       {/* Header appears on all pages */}
       <Header />
       
@@ -55,10 +71,10 @@ function App() {
           </div>
         } />
       </Routes>
-      
+
       {/* Footer appears on all pages */}
       <Footer />
-    </BrowserRouter>
+    </>
   );
 }
 
