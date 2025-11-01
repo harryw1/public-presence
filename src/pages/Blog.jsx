@@ -13,11 +13,9 @@ import { useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
 import PostCard from '../components/PostCard';
 import { getAllPosts, getAllTags, searchPosts, getPostsByTag } from '../utils/posts';
-import { usePageTitle } from '../hooks/usePageTitle';
+import SEO from '../components/SEO';
 
 function Blog() {
-  // Set page title
-  usePageTitle('Blog Archive');
   // Get URL search parameters (for tag filtering via URL)
   // Example: /blog?tag=sustainability
   const [searchParams, setSearchParams] = useSearchParams();
@@ -134,6 +132,13 @@ function Blog() {
   
   return (
     <div className="main-content">
+      {/* SEO Meta Tags */}
+      <SEO
+        title="Blog Archive"
+        description="Read articles about sustainability science, public planning, policy, and public transportation. Evidence-based insights for a sustainable future."
+        url="https://publicpresence.org/blog"
+      />
+
       <div className="container">
         {/* Page header */}
         <div className="blog-header">

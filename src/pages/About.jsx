@@ -7,13 +7,18 @@
  * - Professional background and expertise
  */
 
-import { usePageTitle } from '../hooks/usePageTitle';
+import SEO from '../components/SEO';
 
 function About() {
-  // Set page title
-  usePageTitle('About');
   return (
     <div className="main-content">
+      {/* SEO Meta Tags */}
+      <SEO
+        title="About"
+        description="Learn about Harrison Weiss - Senior Program Manager for GHG Accounting at NYC DCAS, focused on sustainability science, public planning, and transportation policy."
+        url="https://publicpresence.org/about"
+      />
+
       <div className="container about-content">
         <h1>About</h1>
         

@@ -24,7 +24,7 @@ import { formatDate } from '../utils/dateUtils';
 import SubscribeWidget from '../components/SubscribeWidget';
 import TableOfContents from '../components/TableOfContents';
 import RelatedPosts from '../components/RelatedPosts';
-import { usePageTitle } from '../hooks/usePageTitle';
+import SEO from '../components/SEO';
 
 // Import KaTeX CSS for math rendering
 import 'katex/dist/katex.min.css';
@@ -41,9 +41,6 @@ function Post() {
   const [navigation, setNavigation] = useState({ previous: null, next: null });
   const [allPosts, setAllPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Set page title dynamically based on post
-  usePageTitle(post?.title);
 
   // Load post data when slug changes
   useEffect(() => {
@@ -116,9 +113,21 @@ function Post() {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
     email: `mailto:?subject=${shareTitle}&body=I thought you might find this interesting: ${shareUrl}`
   };
-  
+
   return (
     <div className="main-content">
+      {/* SEO Meta Tags - React 19 automatically hoists these to <head> */}
+      <SEO
+        title={post.title}
+        description={post.excerpt}
+        url={shareUrl}
+        type="article"
+        publishedTime={post.date}
+        author={post.author}
+        tags={post.tags}
+        image={post.coverImage || 'https://publicpresence.org/images/og-default.jpg'}
+      />
+
       <article className="container">
         {/* Post header with metadata */}
         <header className="post-header">

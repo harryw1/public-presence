@@ -11,15 +11,13 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PostCard from '../components/PostCard';
 import { getRecentPosts } from '../utils/posts';
-import { usePageTitle } from '../hooks/usePageTitle';
+import SEO from '../components/SEO';
 
 function Home() {
-  // Set page title
-  usePageTitle();
   // State for posts and loading status
   const [recentPosts, setRecentPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Load posts when component mounts
   useEffect(() => {
     async function loadPosts() {
@@ -32,12 +30,18 @@ function Home() {
         setLoading(false);
       }
     }
-    
+
     loadPosts();
   }, []);
-  
+
   return (
     <div className="main-content">
+      {/* SEO Meta Tags */}
+      <SEO
+        description="Exploring sustainability science, public planning, policy, and public transportation. Committed to bettering the public good through evidence-based approaches."
+        url="https://publicpresence.org"
+      />
+
       <div className="container">
         {/* Hero section - site introduction */}
         <section className="hero">

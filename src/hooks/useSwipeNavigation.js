@@ -1,34 +1,18 @@
 /**
- * useSwipeNavigation.js - Custom hook for trackpad/touch swipe navigation
+ * useSwipeNavigation.js - Hook for trackpad/touch swipe navigation
  *
- * Enables browser-style forward/back navigation using:
+ * Uses @use-gesture/react for robust gesture detection:
  * - Trackpad gestures (swipe left/right on MacBook, etc.)
  * - Touch gestures on mobile devices
- * - Mouse drag gestures as fallback
+ * - Mouse drag gestures
  *
  * Swipe right (→) = Navigate back
  * Swipe left (←) = Navigate forward
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-/**
- * Configuration for swipe detection
- */
-const CONFIG = {
-  // Minimum distance (pixels) to register as a swipe
-  minSwipeDistance: 80,
-
-  // Maximum vertical movement allowed for horizontal swipe
-  maxVerticalDeviation: 100,
-
-  // Velocity threshold (pixels per ms) for quick swipes
-  minSwipeVelocity: 0.3,
-
-  // Debounce time (ms) between swipes
-  debounceTime: 300,
-};
+import { useDrag, useWheel } from '@use-gesture/react';
 
 /**
  * Custom hook that enables swipe navigation
@@ -46,26 +30,36 @@ export default function useSwipeNavigation(options = {}) {
     onSwipeRight = null
   } = options;
 
+  const lastNavigationTime = useRef(0);
+
   useEffect(() => {
     if (!enabled) return;
 
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchStartTime = 0;
-    let lastSwipeTime = 0;
-    let isSwiping = false;
+    const debounceTime = 300;
 
     /**
-     * Determine if element is scrollable or should block swipe
+     * Check if we should allow navigation (debounce)
+     */
+    const canNavigate = () => {
+      const now = Date.now();
+      if (now - lastNavigationTime.current < debounceTime) {
+        return false;
+      }
+      lastNavigationTime.current = now;
+      return true;
+    };
+
+    /**
+     * Check if element should block swipe
      */
     const isScrollableElement = (element) => {
-      // Don't interfere with scrollable content
+      if (!element) return false;
+
       const scrollableElements = ['TEXTAREA', 'INPUT', 'SELECT'];
       if (scrollableElements.includes(element.tagName)) {
         return true;
       }
 
-      // Check if element or parent is scrollable
       let currentElement = element;
       while (currentElement && currentElement !== document.body) {
         const overflow = window.getComputedStyle(currentElement).overflowX;
@@ -79,151 +73,92 @@ export default function useSwipeNavigation(options = {}) {
     };
 
     /**
-     * Handle touch/pointer start
+     * Handle trackpad wheel gestures
      */
-    const handleStart = (e) => {
-      // Ignore if starting on scrollable element
-      if (isScrollableElement(e.target)) {
-        return;
-      }
+    const wheelBind = useWheel(
+      ({ direction: [xDir], event }) => {
+        // Only handle horizontal wheel movements
+        if (xDir === 0) return;
 
-      const point = e.touches ? e.touches[0] : e;
-      touchStartX = point.clientX;
-      touchStartY = point.clientY;
-      touchStartTime = Date.now();
-      isSwiping = false;
-    };
+        // Don't interfere with scrollable elements
+        if (isScrollableElement(event.target)) return;
 
-    /**
-     * Handle touch/pointer move
-     */
-    const handleMove = (e) => {
-      if (touchStartX === 0) return;
+        if (!canNavigate()) return;
 
-      const point = e.touches ? e.touches[0] : e;
-      const deltaX = point.clientX - touchStartX;
-      const deltaY = point.clientY - touchStartY;
-
-      // Check if this is a horizontal swipe
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
-        isSwiping = true;
-      }
-    };
-
-    /**
-     * Handle touch/pointer end
-     */
-    const handleEnd = (e) => {
-      if (touchStartX === 0 || !isSwiping) {
-        touchStartX = 0;
-        touchStartY = 0;
-        touchStartTime = 0;
-        isSwiping = false;
-        return;
-      }
-
-      const point = e.changedTouches ? e.changedTouches[0] : e;
-      const deltaX = point.clientX - touchStartX;
-      const deltaY = point.clientY - touchStartY;
-      const deltaTime = Date.now() - touchStartTime;
-      const velocity = Math.abs(deltaX) / deltaTime;
-
-      // Check if enough time has passed since last swipe (debounce)
-      const now = Date.now();
-      if (now - lastSwipeTime < CONFIG.debounceTime) {
-        touchStartX = 0;
-        touchStartY = 0;
-        touchStartTime = 0;
-        isSwiping = false;
-        return;
-      }
-
-      // Check if swipe meets threshold requirements
-      const isValidSwipe =
-        Math.abs(deltaX) >= CONFIG.minSwipeDistance &&
-        Math.abs(deltaY) <= CONFIG.maxVerticalDeviation &&
-        velocity >= CONFIG.minSwipeVelocity;
-
-      if (isValidSwipe) {
-        lastSwipeTime = now;
-
-        // Swipe right = go back
-        if (deltaX > 0) {
+        // xDir: -1 = swipe left (forward), 1 = swipe right (back)
+        if (xDir === 1) {
+          // Swipe right = go back
           if (onSwipeRight) {
             onSwipeRight();
           } else if (window.history.length > 1) {
             navigate(-1);
           }
-        }
-        // Swipe left = go forward
-        else if (deltaX < 0) {
+        } else if (xDir === -1) {
+          // Swipe left = go forward
           if (onSwipeLeft) {
             onSwipeLeft();
           } else {
             navigate(1);
           }
         }
+      },
+      {
+        target: document,
+        eventOptions: { passive: true },
+        axis: 'x', // Only track horizontal movement
+        threshold: 80, // Minimum distance to trigger
       }
-
-      // Reset
-      touchStartX = 0;
-      touchStartY = 0;
-      touchStartTime = 0;
-      isSwiping = false;
-    };
+    );
 
     /**
-     * Handle browser gesture events (Safari, Chrome on Mac)
+     * Handle touch and mouse drag gestures
      */
-    const handleWheel = (e) => {
-      // Detect trackpad horizontal scroll (two-finger swipe)
-      // This uses wheel event with horizontal delta
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-        // Check if it's a significant horizontal scroll
-        if (Math.abs(e.deltaX) > 50) {
-          const now = Date.now();
-          if (now - lastSwipeTime < CONFIG.debounceTime) {
-            return;
+    const dragBind = useDrag(
+      ({ swipe: [swipeX], event }) => {
+        // Only handle horizontal swipes
+        if (swipeX === 0) return;
+
+        // Don't interfere with scrollable elements
+        if (isScrollableElement(event.target)) return;
+
+        if (!canNavigate()) return;
+
+        // swipeX: -1 = swipe left (forward), 1 = swipe right (back)
+        if (swipeX === 1) {
+          // Swipe right = go back
+          if (onSwipeRight) {
+            onSwipeRight();
+          } else if (window.history.length > 1) {
+            navigate(-1);
           }
-
-          lastSwipeTime = now;
-
-          // Swipe left on trackpad (deltaX negative) = go forward
-          if (e.deltaX < -50) {
+        } else if (swipeX === -1) {
+          // Swipe left = go forward
+          if (onSwipeLeft) {
+            onSwipeLeft();
+          } else {
             navigate(1);
           }
-          // Swipe right on trackpad (deltaX positive) = go back
-          else if (e.deltaX > 50) {
-            if (window.history.length > 1) {
-              navigate(-1);
-            }
-          }
         }
+      },
+      {
+        target: document,
+        eventOptions: { passive: true },
+        axis: 'x', // Only track horizontal movement
+        swipe: {
+          distance: 80, // Minimum distance for swipe
+          velocity: 0.3, // Minimum velocity
+        },
+        filterTaps: true, // Don't trigger on clicks
       }
-    };
+    );
 
-    // Add event listeners
-    document.addEventListener('touchstart', handleStart, { passive: true });
-    document.addEventListener('touchmove', handleMove, { passive: true });
-    document.addEventListener('touchend', handleEnd, { passive: true });
+    // Activate the gesture handlers
+    const cleanupWheel = wheelBind();
+    const cleanupDrag = dragBind();
 
-    // Mouse events as fallback
-    document.addEventListener('mousedown', handleStart);
-    document.addEventListener('mousemove', handleMove);
-    document.addEventListener('mouseup', handleEnd);
-
-    // Wheel event for trackpad gestures
-    document.addEventListener('wheel', handleWheel, { passive: true });
-
-    // Cleanup
     return () => {
-      document.removeEventListener('touchstart', handleStart);
-      document.removeEventListener('touchmove', handleMove);
-      document.removeEventListener('touchend', handleEnd);
-      document.removeEventListener('mousedown', handleStart);
-      document.removeEventListener('mousemove', handleMove);
-      document.removeEventListener('mouseup', handleEnd);
-      document.removeEventListener('wheel', handleWheel);
+      if (cleanupWheel) cleanupWheel();
+      if (cleanupDrag) cleanupDrag();
     };
   }, [enabled, navigate, onSwipeLeft, onSwipeRight]);
 }
