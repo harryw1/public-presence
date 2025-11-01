@@ -27,9 +27,11 @@ the Turnpike.
 
 Despite our shared experience of sisyphean moving from Point A to Point
 Z, public transportation is still a masterpiece of engineering and public
-services. For example, [NJ TRANSIT Rail](https://www.njtransit.com/improve/on-time-performance/rail) _On-Time Performance_, at the time of writing this,
-is a healthy 92.1%. Now, does it feel any better knowing that when you are the
-unlucky 7.9% waving goodbye to the 5:21 PM from Hoboken (like I often am)?
+services. For example, [NJ TRANSIT Rail On-Time Performance](https://www.njtransit.com/improve/on-time-performance/rail), at the time of writing this,
+is a healthy 92.1%. 
+
+Now, does it feel any better knowing that when you are the
+unlucky 7.9% waving goodbye to a 6:23 PM train from Hoboken to Port Jervis?
 Definitely not. But there is something incredible about those trains, buses,
 and light-rail locomotives showing up **at all**. Thousands of public transportation
 workers across the country, getting up early, staying late - mechanics, engineers,
