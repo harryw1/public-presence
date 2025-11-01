@@ -33,7 +33,7 @@ const TWITTER_HANDLE = '@publicpresence'; // Update with your actual Twitter han
 export default function SEO({
   title,
   description = DEFAULT_DESCRIPTION,
-  image = `${SITE_URL}/images/og-default.jpg`, // You'll want to create a default OG image
+  image = `${SITE_URL}/favicon.svg`, // Using favicon as fallback until og-default.jpg is created
   url = SITE_URL,
   type = 'website',
   publishedTime,

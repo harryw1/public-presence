@@ -31,134 +31,126 @@ export default function useSwipeNavigation(options = {}) {
   } = options;
 
   const lastNavigationTime = useRef(0);
+  const debounceTime = 300;
 
-  useEffect(() => {
-    if (!enabled) return;
+  /**
+   * Check if we should allow navigation (debounce)
+   */
+  const canNavigate = () => {
+    const now = Date.now();
+    if (now - lastNavigationTime.current < debounceTime) {
+      return false;
+    }
+    lastNavigationTime.current = now;
+    return true;
+  };
 
-    const debounceTime = 300;
+  /**
+   * Check if element should block swipe
+   */
+  const isScrollableElement = (element) => {
+    if (!element) return false;
 
-    /**
-     * Check if we should allow navigation (debounce)
-     */
-    const canNavigate = () => {
-      const now = Date.now();
-      if (now - lastNavigationTime.current < debounceTime) {
-        return false;
-      }
-      lastNavigationTime.current = now;
+    const scrollableElements = ['TEXTAREA', 'INPUT', 'SELECT'];
+    if (scrollableElements.includes(element.tagName)) {
       return true;
-    };
+    }
 
-    /**
-     * Check if element should block swipe
-     */
-    const isScrollableElement = (element) => {
-      if (!element) return false;
-
-      const scrollableElements = ['TEXTAREA', 'INPUT', 'SELECT'];
-      if (scrollableElements.includes(element.tagName)) {
+    let currentElement = element;
+    while (currentElement && currentElement !== document.body) {
+      const overflow = window.getComputedStyle(currentElement).overflowX;
+      if (overflow === 'auto' || overflow === 'scroll') {
         return true;
       }
+      currentElement = currentElement.parentElement;
+    }
 
-      let currentElement = element;
-      while (currentElement && currentElement !== document.body) {
-        const overflow = window.getComputedStyle(currentElement).overflowX;
-        if (overflow === 'auto' || overflow === 'scroll') {
-          return true;
+    return false;
+  };
+
+  /**
+   * Handle trackpad wheel gestures
+   */
+  useWheel(
+    ({ direction: [xDir], event }) => {
+      if (!enabled) return;
+
+      // Only handle horizontal wheel movements
+      if (xDir === 0) return;
+
+      // Don't interfere with scrollable elements
+      if (isScrollableElement(event.target)) return;
+
+      if (!canNavigate()) return;
+
+      // xDir: -1 = swipe left (forward), 1 = swipe right (back)
+      if (xDir === 1) {
+        // Swipe right = go back
+        if (onSwipeRight) {
+          onSwipeRight();
+        } else if (window.history.length > 1) {
+          navigate(-1);
         }
-        currentElement = currentElement.parentElement;
+      } else if (xDir === -1) {
+        // Swipe left = go forward
+        if (onSwipeLeft) {
+          onSwipeLeft();
+        } else {
+          navigate(1);
+        }
       }
+    },
+    {
+      target: document,
+      eventOptions: { passive: true },
+      axis: 'x', // Only track horizontal movement
+      threshold: 80, // Minimum distance to trigger
+      enabled, // Pass enabled to the gesture config
+    }
+  );
 
-      return false;
-    };
+  /**
+   * Handle touch and mouse drag gestures
+   */
+  useDrag(
+    ({ swipe: [swipeX], event }) => {
+      if (!enabled) return;
 
-    /**
-     * Handle trackpad wheel gestures
-     */
-    const wheelBind = useWheel(
-      ({ direction: [xDir], event }) => {
-        // Only handle horizontal wheel movements
-        if (xDir === 0) return;
+      // Only handle horizontal swipes
+      if (swipeX === 0) return;
 
-        // Don't interfere with scrollable elements
-        if (isScrollableElement(event.target)) return;
+      // Don't interfere with scrollable elements
+      if (isScrollableElement(event.target)) return;
 
-        if (!canNavigate()) return;
+      if (!canNavigate()) return;
 
-        // xDir: -1 = swipe left (forward), 1 = swipe right (back)
-        if (xDir === 1) {
-          // Swipe right = go back
-          if (onSwipeRight) {
-            onSwipeRight();
-          } else if (window.history.length > 1) {
-            navigate(-1);
-          }
-        } else if (xDir === -1) {
-          // Swipe left = go forward
-          if (onSwipeLeft) {
-            onSwipeLeft();
-          } else {
-            navigate(1);
-          }
+      // swipeX: -1 = swipe left (forward), 1 = swipe right (back)
+      if (swipeX === 1) {
+        // Swipe right = go back
+        if (onSwipeRight) {
+          onSwipeRight();
+        } else if (window.history.length > 1) {
+          navigate(-1);
         }
+      } else if (swipeX === -1) {
+        // Swipe left = go forward
+        if (onSwipeLeft) {
+          onSwipeLeft();
+        } else {
+          navigate(1);
+        }
+      }
+    },
+    {
+      target: document,
+      eventOptions: { passive: true },
+      axis: 'x', // Only track horizontal movement
+      swipe: {
+        distance: 80, // Minimum distance for swipe
+        velocity: 0.3, // Minimum velocity
       },
-      {
-        target: document,
-        eventOptions: { passive: true },
-        axis: 'x', // Only track horizontal movement
-        threshold: 80, // Minimum distance to trigger
-      }
-    );
-
-    /**
-     * Handle touch and mouse drag gestures
-     */
-    const dragBind = useDrag(
-      ({ swipe: [swipeX], event }) => {
-        // Only handle horizontal swipes
-        if (swipeX === 0) return;
-
-        // Don't interfere with scrollable elements
-        if (isScrollableElement(event.target)) return;
-
-        if (!canNavigate()) return;
-
-        // swipeX: -1 = swipe left (forward), 1 = swipe right (back)
-        if (swipeX === 1) {
-          // Swipe right = go back
-          if (onSwipeRight) {
-            onSwipeRight();
-          } else if (window.history.length > 1) {
-            navigate(-1);
-          }
-        } else if (swipeX === -1) {
-          // Swipe left = go forward
-          if (onSwipeLeft) {
-            onSwipeLeft();
-          } else {
-            navigate(1);
-          }
-        }
-      },
-      {
-        target: document,
-        eventOptions: { passive: true },
-        axis: 'x', // Only track horizontal movement
-        swipe: {
-          distance: 80, // Minimum distance for swipe
-          velocity: 0.3, // Minimum velocity
-        },
-        filterTaps: true, // Don't trigger on clicks
-      }
-    );
-
-    // Activate the gesture handlers
-    const cleanupWheel = wheelBind();
-    const cleanupDrag = dragBind();
-
-    return () => {
-      if (cleanupWheel) cleanupWheel();
-      if (cleanupDrag) cleanupDrag();
-    };
-  }, [enabled, navigate, onSwipeLeft, onSwipeRight]);
+      filterTaps: true, // Don't trigger on clicks
+      enabled, // Pass enabled to the gesture config
+    }
+  );
 }

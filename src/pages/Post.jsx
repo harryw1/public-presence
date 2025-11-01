@@ -125,7 +125,7 @@ function Post() {
         publishedTime={post.date}
         author={post.author}
         tags={post.tags}
-        image={post.coverImage || 'https://publicpresence.org/images/og-default.jpg'}
+        image={post.coverImage}
       />
 
       <article className="container">
