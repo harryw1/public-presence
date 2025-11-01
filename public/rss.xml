@@ -7,138 +7,73 @@
     <link>https://publicpresence.org</link>
     <description>Personal blog focused on sustainability science, public planning, policy, and public transportation</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Oct 2025 19:51:32 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 01 Nov 2025 00:08:52 GMT</lastBuildDate>
     <atom:link href="https://publicpresence.org/rss.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Understanding Scope 1, 2, and 3 Emissions in Public Sector Accounting</title>
-      <link>https://publicpresence.org/blog/understanding-scope-emissions</link>
-      <guid isPermaLink="true">https://publicpresence.org/blog/understanding-scope-emissions</guid>
-      <pubDate>Mon, 20 Jan 2025 00:00:00 GMT</pubDate>
-      <description>A comprehensive look at how public sector organizations categorize and measure greenhouse gas emissions across different scopes.</description>
+      <title>Public Transportation and You</title>
+      <link>https://publicpresence.org/blog/public-transportation</link>
+      <guid isPermaLink="true">https://publicpresence.org/blog/public-transportation</guid>
+      <pubDate>Fri, 31 Oct 2025 00:00:00 GMT</pubDate>
+      <description>Public transit keeps your neighbors moving, and probably you too!</description>
       <content:encoded><![CDATA[
-# Understanding Scope 1, 2, and 3 Emissions in Public Sector Accounting
+# Public Transportation and You
 
-When public sector organizations commit to reducing their greenhouse gas emissions, one of the first challenges is understanding what to measure. The GHG Protocol provides a framework that categorizes emissions into three "scopes," each representing different sources and levels of organizational control.
+When trains are delayed, buses are stuck in traffic, and our communities clogged with traffic,
+it can feel like our public transportation systems are failing us. Let's talk about that.
 
-## The Three Scopes
+## Frustration and Heartache
 
-### Scope 1: Direct Emissions
+There is something especially soul crushing about missing a connection
+during a commute home after a long day, especially when you get the horrible
+opportunity to watch your bus or train close the doors and depart without you
+just after dashing widely through the subway or terminal to try to make it just
+in time. The agony of standing in the rain, or snow, or, even worse, an 
+East-Coast summer. Every commuter knows these frustrations and heartaches like
+they were born with them. And yet, some of us would rather face these pains
+than have to spend a moment driving in Manhattan, on the Parkway, or on
+the Turnpike.
 
-Scope 1 emissions are those directly produced by sources owned or controlled by the organization. For a city government, this typically includes:
+## Better Than You Think
 
-- Emissions from city-owned vehicles (police cars, fire trucks, sanitation vehicles)
-- Natural gas used in city-owned buildings
-- Fugitive emissions from refrigerants in HVAC systems
-- Any on-site fuel combustion
+Despite our shared experience of sisyphean moving from Point A to Point
+Z, public transportation is still a masterpiece of engineering and public
+services. For example, [NJ TRANSIT Rail](https://www.njtransit.com/improve/on-time-performance/rail) _On-Time Performance_, at the time of writing this,
+is a healthy 92.1%. Now, does it feel any better knowing that when you are the
+unlucky 7.9% waving goodbye to the 5:21 PM from Hoboken (like I often am)?
+Definitely not. But there is something incredible about those trains, buses,
+and light-rail locomotives showing up **at all**. Thousands of public transportation
+workers across the country, getting up early, staying late - mechanics, engineers,
+conductors, bus operators, logistics teams, on and on. All of these teams
+working in tandem to move millions of Americans to and from job, friends, and family
+day in and day out, rain or snow or shine. After Hurricane Sandy, NJ TRANSIT
+was a front-line, first-responder for transporting people to and from New Jersey
+and New York City under "dark sky" operations.
 
-**Why it matters:** These emissions are under direct organizational control, making them the most straightforward to measure and reduce through operational changes.
+## So, what's my point?
 
-### Scope 2: Indirect Emissions from Purchased Energy
+My point is this: public transportation is, without a doubt, is the backbone
+of American economics **and** serves as more than just as a way of getting from
+one place to another. Couple this critical economic service with the fact that
+public transportation is a more energy and emissions efficient mode of
+transportation than single-passenger vehicles and it becomes clear just what we
+are missing out on by _not_ investing in maintaining existing infrastructure, 
+personnel resources, and building new infrastructure to serve first- and last-mile
+transportation needs.
 
-Scope 2 covers emissions from the generation of purchased electricity, steam, heating, or cooling consumed by the organization. While the actual combustion happens at a power plant elsewhere, the organization is responsible because it purchases and uses that energy.
-
-For public sector entities, this primarily means:
-
-- Electricity purchased for government buildings
-- District steam or chilled water (common in dense urban areas)
-
-**Why it matters:** While these emissions occur off-site, they're a direct result of organizational energy consumption and can be significantly reduced through energy efficiency and renewable energy procurement.
-
-### Scope 3: Other Indirect Emissions
-
-Scope 3 is the broadest and often most challenging category. It includes all other indirect emissions that occur in an organization's value chain, including both upstream and downstream activities.
-
-For government entities, relevant Scope 3 categories might include:
-
-- Employee commuting
-- Business travel
-- Purchased goods and services
-- Waste disposal
-- Contracted services
-- Construction activities
-
-**Why it matters:** Scope 3 often represents the largest portion of an organization's carbon footprint, but it's also the most difficult to measure and influence.
-
-## The Measurement Challenge
-
-Accurately measuring emissions across all three scopes requires robust data systems and clear methodologies. Here's a simplified calculation framework:
-
-$$
-\\text{Total Emissions} = \\sum (\\text{Activity Data} \\times \\text{Emission Factor})
-$$
-
-For each emission source, you need:
-
-1. **Activity data** - Quantitative measure of the activity (gallons of fuel, kWh of electricity, etc.)
-2. **Emission factor** - The amount of GHG emitted per unit of activity
-
-### Example Calculation
-
-Let's calculate emissions from a city vehicle fleet:
-
-```python
-# Scope 1: Fleet emissions calculation
-
-fleet_data = {
-    'gasoline_vehicles': {
-        'fuel_consumed_gallons': 50000,
-        'emission_factor': 0.008887  # metric tons CO2e per gallon
-    },
-    'diesel_vehicles': {
-        'fuel_consumed_gallons': 30000,
-        'emission_factor': 0.010180  # metric tons CO2e per gallon
-    }
-}
-
-def calculate_fleet_emissions(fleet_data):
-    total_emissions = 0
-    for vehicle_type, data in fleet_data.items():
-        emissions = data['fuel_consumed_gallons'] * data['emission_factor']
-        print(f"{vehicle_type}: {emissions:.2f} metric tons CO2e")
-        total_emissions += emissions
-    return total_emissions
-
-total = calculate_fleet_emissions(fleet_data)
-print(f"\\nTotal fleet emissions: {total:.2f} metric tons CO2e")
-```
-
-Output:
-```
-gasoline_vehicles: 444.35 metric tons CO2e
-diesel_vehicles: 305.40 metric tons CO2e
-
-Total fleet emissions: 749.75 metric tons CO2e
-```
-
-## Practical Challenges in Public Sector Accounting
-
-Public sector organizations face unique challenges in GHG accounting:
-
-1. **Data fragmentation** - Information may be spread across multiple departments with different systems
-2. **Scope 3 complexity** - Government activities touch countless areas, making comprehensive Scope 3 accounting resource-intensive
-3. **Consistency over time** - Maintaining consistent methodologies as operations and data systems evolve
-4. **Comparability** - Balancing standardized approaches with the unique characteristics of different jurisdictions
-
-## Moving Forward
-
-Effective GHG accounting is foundational to climate action. While perfect precision is impossible, developing systematic approaches to measurement enables:
-
-- **Baseline establishment** - Understanding current emissions levels
-- **Target setting** - Creating informed, achievable reduction goals
-- **Progress tracking** - Measuring the effectiveness of interventions
-- **Transparency** - Communicating clearly with stakeholders and the public
-
-As we continue to refine these methodologies, the goal remains clear: provide decision-makers with accurate, actionable information to drive meaningful emissions reductions.
 
 ---
 
-*This post reflects general principles of GHG accounting. Specific methodologies may vary by jurisdiction and should be tailored to local circumstances and regulatory requirements.*
+## Conclusion
+
+If you're a voter, a local official, a commuter, or even just want fewer people on the
+road so you can drive your car to the office, make your voice heard in the public 
+commons by speaking up at local and State hearings! We can all benefit from these 
+renewed community services and enjoy a better commute, together.
 ]]></content:encoded>
-      <category>GHG accounting</category>
-      <category>public sector</category>
-      <category>climate policy</category>
       <category>sustainability</category>
+      <category>public transit</category>
+      <category>public policy</category>
     </item>
 
     <item>
@@ -160,51 +95,14 @@ Through this platform, I'll be sharing insights from my work in greenhouse gas a
 
 The content here will focus on several interconnected themes:
 
-1. **Greenhouse Gas Accounting** - Methodologies, challenges, and innovations in measuring and tracking emissions
-2. **Public Transportation** - Policy, planning, and operations for sustainable transit systems
-3. **Sustainability Science** - Research-driven approaches to environmental challenges
-4. **Public Policy** - Evidence-based policy development for climate action
-5. **Urban Planning** - Creating resilient, sustainable cities
+1. **Public Transportation** - Policy, planning, and operations for sustainable transit systems
+2. **Sustainability Science** - Research-driven approaches to environmental challenges
+3. **Public Policy** - Evidence-based policy development for climate action
+4. **Urban Planning** - Creating resilient, sustainable cities
 
 ## A Note on Approach
 
 Throughout my career in public service, I've been committed to rigorous, data-driven approaches to sustainability challenges. This blog will reflect that commitment by grounding discussions in research, data, and practical experience.
-
-## Math and Code
-
-When needed, I'll include mathematical equations to explain concepts. For example, calculating emissions factors:
-
-$$
-E = A \\times EF
-$$
-
-Where:
-- $E$ = Total emissions
-- $A$ = Activity data
-- $EF$ = Emission factor
-
-I may also share code snippets and technical approaches:
-
-```python
-def calculate_emissions(activity_data, emission_factor):
-    """
-    Calculate total emissions from activity data and emission factor.
-    
-    Args:
-        activity_data (float): Amount of activity (e.g., kWh, miles)
-        emission_factor (float): Emissions per unit of activity
-    
-    Returns:
-        float: Total emissions
-    """
-    return activity_data * emission_factor
-
-# Example usage
-electricity_kwh = 10000
-ef_electricity = 0.000744  # metric tons CO2e per kWh (US grid average)
-emissions = calculate_emissions(electricity_kwh, ef_electricity)
-print(f"Total emissions: {emissions:.2f} metric tons CO2e")
-```
 
 ## Moving Forward
 
@@ -214,7 +112,7 @@ Thank you for reading, and I look forward to sharing more insights in future pos
 
 ---
 
-*Have thoughts or questions? Feel free to reach out through the channels listed on the [About](/about) page.*
+_Have thoughts or questions? Feel free to reach out through the channels listed on the [About](/about) page._
 ]]></content:encoded>
       <category>introduction</category>
       <category>sustainability</category>

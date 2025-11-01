@@ -1,0 +1,25 @@
+[Unit]
+Description=GitHub Webhook Receiver for publicpresence.org
+Documentation=https://publicpresence.org
+After=network.target
+
+[Service]
+Type=simple
+User=harryweiss
+Group=harryweiss
+WorkingDirectory=/home/harryweiss/publicpresence
+Environment="WEBHOOK_SECRET=5d16dd02469301bad50cd2e89268c528f78a94a674f9c39fc02023f4d366d12b"
+ExecStart=/usr/bin/node /home/harryweiss/publicpresence/webhook-receiver.js
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=github-webhook
+
+# Security hardening
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

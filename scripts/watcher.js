@@ -34,8 +34,8 @@ const CONFIG = {
   debounceDelay: 5000, // 5 seconds
   
   // Build command to execute
-  // This runs the full deployment script
-  buildCommand: './deploy.sh',
+  // This runs the full deployment script with git pull
+  buildCommand: '/home/harryweiss/update-blog.sh',
   
   // Log file path (optional)
   logFile: path.join(__dirname, '../logs/watcher.log'),

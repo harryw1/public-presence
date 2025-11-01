@@ -13,13 +13,15 @@
  */
 export function formatDate(dateString) {
   const date = new Date(dateString);
-  
+
   // Use Intl.DateTimeFormat for localized, readable dates
-  // This is more maintainable than manual string manipulation
+  // Force UTC timezone to display the exact date from frontmatter
+  // without timezone conversion (prevents "day before" bug)
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
+    timeZone: 'UTC'
   }).format(date);
 }
 
